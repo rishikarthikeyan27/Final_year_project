@@ -11,7 +11,7 @@ class Window:
         self.win.geometry('1000x650')
         self.win.configure(bg = 'black')
 
-         #Create Frames
+        #Create Frames
         self.frame1 = tk.Frame(master=self.win, width=280, height=630, bg='#006665')
         self.frame1.pack(fill=tk.BOTH, padx=10, pady=15,side=tk.LEFT, expand=False)
         self.frame2 = tk.Frame(master=self.win, width=680, height=315, bg="#006665")
@@ -98,7 +98,6 @@ class Window:
         #mainloop
         self.win.mainloop()
         
-        #Window_Functions
     def display_crossection_picture(self, c):
         if(c == "Rectangular"):
             #add Rectangle cross section picture
@@ -153,9 +152,10 @@ class Window:
             print('width : ' + str(resized_image.width()), 'height : ' + str(resized_image.height()))
             img_canvas.place(x= 100, y=400)  
             img_canvas.create_image(28, 32, image = resized_image, tag = "O")
-
+    
+    # Displays crossection picture
     def master_crossection_function(self, choice):
-        self.display_crossection_picture(choice) # Displays crossection picture
+        self.display_crossection_picture(choice) 
 
     def create_up_arrow(self):
         self.arrow_up_lab = tk.Label(self.frame2,image = self.resized_arrow_up_pic, bg = '#006665')
@@ -187,5 +187,9 @@ class Window:
         self.nonuniform_load_lab.place(height = 40, width = 80, x=random.randrange(300,400), y=random.randrange(40,100))
         self.arrow_list.append(self.nonuniform_load_lab)
         return
-
+    def create_simple_support(self):
+        pass
+    def create_fixed_support(self):
+        pass
+    
 root = Window()
