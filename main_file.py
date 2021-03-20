@@ -64,13 +64,13 @@ class Window:
         #Simple Support
         self.simple_support_pic = Image.open('images/simple_support.png').resize((60,50), Image.ANTIALIAS)
         self.resized_simple_support_pic = ImageTk.PhotoImage(self.simple_support_pic)
-        self.simple_support_button = tk.Button(self.win, image = self.resized_simple_support_pic, bg = 'black')
+        self.simple_support_button = tk.Button(self.frame1, image = self.resized_simple_support_pic, bg = 'black', command = self.create_simple_support)
         self.simple_support_button.place(height = 40, width = 80, x=70, y=250)
 
         #Fixed Support
         self.fixed_support_pic = Image.open('images/fixed_support.png').resize((60,50), Image.ANTIALIAS)
         self.resized_fixed_support_pic = ImageTk.PhotoImage(self.fixed_support_pic)
-        self.fixed_support_button = tk.Button(self.win, image = self.resized_fixed_support_pic, bg = 'black')
+        self.fixed_support_button = tk.Button(self.frame1, image = self.resized_fixed_support_pic, bg = 'black', command = self.create_fixed_support)
         self.fixed_support_button.place(height = 40, width = 80, x=150, y=250)
 
         #Crossection Drop Down
@@ -81,10 +81,15 @@ class Window:
 
         #Create the beam picture
         self.beam_pic = Image.open('images/beam.png').resize((400, 50), Image.ANTIALIAS)
-        self.beam_pic = self.beam_pic
         self.resized_beam_pic = ImageTk.PhotoImage(self.beam_pic)
-        self.beam_lab = tk.Label(self.win, width = 400, height = 50, image = self.resized_beam_pic, bg = 'black')
-        self.beam_lab.place(x=480, y = 200)
+        self.beam_lab = tk.Label(self.frame2, width = 400, height = 50, image = self.resized_beam_pic, bg = 'black')
+        self.beam_lab.place(x=150, y = 200)
+
+        #Creating beam support pictures
+        self.beam_simple_support = Image.open('images/beamsimplesupport.png').resize((40, 30), Image.ANTIALIAS)
+        self.resized_beam_simple_support = ImageTk.PhotoImage(self.beam_simple_support)
+        self.beam_fixed_support = Image.open('images/beamfixedsupport.png').resize((30, 100), Image.ANTIALIAS)
+        self.resized_beam_fixed_support = ImageTk.PhotoImage(self.beam_fixed_support)
 
         #Bin
         self.bin_pic = Image.open('images/bin.png').resize((50, 50), Image.ANTIALIAS)
@@ -187,9 +192,17 @@ class Window:
         self.nonuniform_load_lab.place(height = 40, width = 80, x=random.randrange(300,400), y=random.randrange(40,100))
         self.arrow_list.append(self.nonuniform_load_lab)
         return
+    
+    #create supports
     def create_simple_support(self):
-        pass
+        self.simple_support_lab = tk.Label(self.frame2, image = self.resized_beam_simple_support)
+        self.simple_support_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
+        return
     def create_fixed_support(self):
-        pass
+        self.fixed_support_lab = tk.Label(self.frame2, image = self.resized_beam_fixed_support)
+        self.fixed_support_lab.place(height = 100, width = 30, x=120, y = 180)
+        return
+    def print_arrow_list(self):
+        print(self.arrow_list)
     
 root = Window()
