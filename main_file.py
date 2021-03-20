@@ -4,6 +4,8 @@ from PIL import ImageTk, Image
 import random
 
 class Window:
+
+    #Init
     def __init__(self):
         
         #Create window
@@ -61,6 +63,12 @@ class Window:
         self.g_nonuniform_pic = Image.open('images/green_nonuniform_distributed_load.png').resize((80,50), Image.ANTIALIAS)
         self.resized_g_nonuniform_pic = ImageTk.PhotoImage(self.g_nonuniform_pic)
 
+        #Creating beam support pictures
+        self.beam_simple_support = Image.open('images/beamsimplesupport.png').resize((40, 30), Image.ANTIALIAS)
+        self.resized_beam_simple_support = ImageTk.PhotoImage(self.beam_simple_support)
+        self.beam_fixed_support = Image.open('images/beamfixedsupport.png').resize((30, 100), Image.ANTIALIAS)
+        self.resized_beam_fixed_support = ImageTk.PhotoImage(self.beam_fixed_support)
+
         #Simple Support
         self.simple_support_pic = Image.open('images/simple_support.png').resize((60,50), Image.ANTIALIAS)
         self.resized_simple_support_pic = ImageTk.PhotoImage(self.simple_support_pic)
@@ -85,24 +93,19 @@ class Window:
         self.beam_lab = tk.Label(self.frame2, width = 400, height = 50, image = self.resized_beam_pic, bg = 'black')
         self.beam_lab.place(x=150, y = 200)
 
-        #Creating beam support pictures
-        self.beam_simple_support = Image.open('images/beamsimplesupport.png').resize((40, 30), Image.ANTIALIAS)
-        self.resized_beam_simple_support = ImageTk.PhotoImage(self.beam_simple_support)
-        self.beam_fixed_support = Image.open('images/beamfixedsupport.png').resize((30, 100), Image.ANTIALIAS)
-        self.resized_beam_fixed_support = ImageTk.PhotoImage(self.beam_fixed_support)
-
         #Bin
         self.bin_pic = Image.open('images/bin.png').resize((50, 50), Image.ANTIALIAS)
         self.resized_bin_pic = ImageTk.PhotoImage(self.bin_pic)
         self.bin_label= tk.Label(self.win, width = 50, height = 50, image = self.resized_bin_pic, bg = '#006665')
         self.bin_label.place(x=910, y = 30)
 
-        #Instantiating a list of all the arrows and supports added
+        #List of all the arrows that have been added
         self.arrow_list = []
 
         #mainloop
         self.win.mainloop()
-        
+
+    # Displays crossection picture  
     def display_crossection_picture(self, c):
         if(c == "Rectangular"):
             #add Rectangle cross section picture
@@ -158,10 +161,11 @@ class Window:
             img_canvas.place(x= 100, y=400)  
             img_canvas.create_image(28, 32, image = resized_image, tag = "O")
     
-    # Displays crossection picture
+    # Crossection OptionMenu master function
     def master_crossection_function(self, choice):
         self.display_crossection_picture(choice) 
 
+    # Creating arrows
     def create_up_arrow(self):
         self.arrow_up_lab = tk.Label(self.frame2,image = self.resized_arrow_up_pic, bg = '#006665')
         self.arrow_up_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
@@ -193,7 +197,7 @@ class Window:
         self.arrow_list.append(self.nonuniform_load_lab)
         return
     
-    #create supports
+    # Creating supports
     def create_simple_support(self):
         self.simple_support_lab = tk.Label(self.frame2, image = self.resized_beam_simple_support)
         self.simple_support_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
@@ -202,6 +206,8 @@ class Window:
         self.fixed_support_lab = tk.Label(self.frame2, image = self.resized_beam_fixed_support)
         self.fixed_support_lab.place(height = 100, width = 30, x=120, y = 180)
         return
+    
+    # Print arrow_list
     def print_arrow_list(self):
         print(self.arrow_list)
     
