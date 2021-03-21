@@ -23,6 +23,7 @@ class Dog:
         x = self.win.winfo_pointerx() - self.win.winfo_rootx()
         y = self.win.winfo_pointery() - self.win.winfo_rooty()
         e.widget.place(height = 60, width = 50, x=x,y=y,anchor='center')
+        
     def delete(self, e):
         if((str(self.bin_label.winfo_rootx())[0] + str(self.bin_label.winfo_rootx())[1]) == (str(e.widget.winfo_rootx())[0] + str(e.widget.winfo_rootx())[1])) and ((str(self.bin_label.winfo_rooty())[0] + str(self.bin_label.winfo_rooty())[1]) == (str(e.widget.winfo_rooty())[0] + str(e.widget.winfo_rooty())[1])):
             e.widget.destroy()

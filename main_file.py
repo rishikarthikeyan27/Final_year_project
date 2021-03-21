@@ -101,7 +101,7 @@ class Window:
 
         #Delete all loads
         self.delete_all_loads = ImageTk.PhotoImage(Image.open('images/delete_all_loads.png').resize((60, 60), Image.ANTIALIAS))
-        self.dal_button = tk.Button(self.frame2, image = self.delete_all_loads, bg = '#006665') #command = self.del_all_loads
+        self.dal_button = tk.Button(self.frame2, image = self.delete_all_loads, bg = '#006665',command = self.del_all_loads) #command = self.del_all_loads
         self.dal_button.place(width = 60, height = 60, x = 5, y=15)
 
         #List of all the arrows that have been added
@@ -121,6 +121,12 @@ class Window:
         if((str(self.bin_label.winfo_rootx())[0] + str(self.bin_label.winfo_rootx())[1]) == (str(e.widget.winfo_rootx())[0] + str(e.widget.winfo_rootx())[1])) and ((str(self.bin_label.winfo_rooty())[0] + str(self.bin_label.winfo_rooty())[1]) == (str(e.widget.winfo_rooty())[0] + str(e.widget.winfo_rooty())[1])):
             e.widget.destroy()
             print("Done destroying")
+
+    def del_all_loads(self):
+        for i in self.arrow_list:
+            i.destroy()
+        self.arrow_list.clear()
+        print(self.arrow_list)
     
     #widget master
     def widget_master(self, e):
