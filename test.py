@@ -8,6 +8,9 @@ class Dog:
         self.win.geometry('1000x650')
         self.puppy = ImageTk.PhotoImage(Image.open('images/puppy.png').resize((80, 50), Image.ANTIALIAS))
         self.puppy_button = tk.Button(self.win, text = "Create Puppies", command = self.create_label)
+        self.bin = ImageTk.PhotoImage(Image.open('images/bin.png').resize((80, 50), Image.ANTIALIAS))
+        self.bin_label = tk.Label(self.win, text = "bin", image = self.bin)
+        self.bin_label.place(height = 50, width = 80, x= 0, y=0)
         self.puppy_button.pack()
 
     def move(self, e):
@@ -20,10 +23,12 @@ class Dog:
     def create_label(self):
         self.puppy_label = tk.Label(self.win, image = self.puppy, text = str(random.randint(1,3)))
         self.puppy_label.place(height = 80, width = 50, x= random.randint(300,400), y = random.randint(300, 400))
-        self.label_list.append(self.puppy_label)
-        print("All the labels : ", self.label_list)
         self.puppy_label.bind('<B1-Motion>', self.move)
         return
+    
+    def delete(self, e):
+        e.widget.destroy()
+        
     
 lab = Dog()
 lab.win.mainloop()
