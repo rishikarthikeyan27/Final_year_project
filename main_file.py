@@ -22,25 +22,25 @@ class Window:
         self.frame3.pack(fill=tk.Y, padx=5, pady=15,side=tk.BOTTOM, expand=False)
 
         #Arrow down button
-        self.arrow_down_pic = Image.open('images/arrow.png').resize((20, 20), Image.ANTIALIAS)
+        self.arrow_down_pic = Image.open('images/arrow.png').resize((30, 30), Image.ANTIALIAS)
         self.resized_arrow_down_pic = ImageTk.PhotoImage(self.arrow_down_pic)
         self.arrow_down_button = tk.Button(self.win, text = "Point Force", image = self.resized_arrow_down_pic, bg = 'black', command = self.create_down_arrow)
         self.arrow_down_button.place(height = 40, width = 80, x=70, y=50)
 
         #Arrow up button
-        self.arrow_up_pic = Image.open('images/arrow_up.png').resize((20,20), Image.ANTIALIAS)
+        self.arrow_up_pic = Image.open('images/arrow_up.png').resize((30,30), Image.ANTIALIAS)
         self.resized_arrow_up_pic = ImageTk.PhotoImage(self.arrow_up_pic)
         self.arrow_up_button = tk.Button(self.win, text = "Point Force", image = self.resized_arrow_up_pic, bg = 'black',command = self.create_up_arrow)
         self.arrow_up_button.place(height = 40, width = 80, x=70, y=90)
 
         #Anticlockwise Moment button
-        self.moment_ac_pic = Image.open('images/moment_anticlockwise.png').resize((20,20), Image.ANTIALIAS)
+        self.moment_ac_pic = Image.open('images/moment_anticlockwise.png').resize((30,30), Image.ANTIALIAS)
         self.resized_moment_ac_pic = ImageTk.PhotoImage(self.moment_ac_pic)
         self.moment_ac_button = tk.Button(self.win, image = self.resized_moment_ac_pic, bg = 'black',command = self.create_moment_ac)
         self.moment_ac_button.place(height = 40, width = 80, x=150, y=50)
 
         #Clockwise Moment button
-        self.moment_c_pic = Image.open('images/moment_clockwise.png').resize((20,20), Image.ANTIALIAS)
+        self.moment_c_pic = Image.open('images/moment_clockwise.png').resize((30,30), Image.ANTIALIAS)
         self.resized_moment_c_pic = ImageTk.PhotoImage(self.moment_c_pic)
         self.moment_c_button = tk.Button(self.win, image = self.resized_moment_c_pic, bg = 'black',command = self.create_moment_c)
         self.moment_c_button.place(height = 40, width = 80, x=150, y=90)
@@ -96,8 +96,8 @@ class Window:
         #Bin
         self.bin_pic = Image.open('images/bin.png').resize((50, 50), Image.ANTIALIAS)
         self.resized_bin_pic = ImageTk.PhotoImage(self.bin_pic)
-        self.bin_label= tk.Label(self.win, width = 50, height = 50, image = self.resized_bin_pic, bg = '#006665')
-        self.bin_label.place(x=910, y = 30)
+        self.bin_label= tk.Label(self.frame2, image = self.resized_bin_pic, bg = '#006665')
+        self.bin_label.place( width = 50, height = 50, x=600, y = 15)
 
         #List of all the arrows that have been added
         self.arrow_list = []
@@ -107,10 +107,20 @@ class Window:
 
     #Widget move
     def move(self, e):
-        print (e.x , e.y)
         x = e.widget.master.winfo_pointerx() - e.widget.master.winfo_rootx()
         y = e.widget.master.winfo_pointery() - e.widget.master.winfo_rooty()
         e.widget.place(height = e.widget.winfo_height(), width = e.widget.winfo_width(), x=x,y=y,anchor='center')
+
+    #Widget delete
+    def delete(self, e):        
+        if((str(self.bin_label.winfo_rootx())[0] + str(self.bin_label.winfo_rootx())[1]) == (str(e.widget.winfo_rootx())[0] + str(e.widget.winfo_rootx())[1])) and ((str(self.bin_label.winfo_rooty())[0] + str(self.bin_label.winfo_rooty())[1]) == (str(e.widget.winfo_rooty())[0] + str(e.widget.winfo_rooty())[1])):
+            e.widget.destroy()
+            print("Done destroying")
+    
+    #widget master
+    def widget_master(self, e):
+        self.move(e)
+        self.delete(e)
     
     # Displays crossection picture  
     def display_crossection_picture(self, c):
@@ -177,33 +187,37 @@ class Window:
         self.arrow_up_lab = tk.Label(self.frame2,image = self.resized_arrow_up_pic, bg = '#006665')
         self.arrow_up_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
         self.arrow_list.append(self.arrow_up_lab)
-        self.arrow_up_lab.bind('<B1-Motion>', self.move)
+        self.arrow_up_lab.bind('<B1-Motion>', self.widget_master)
         return
     def create_down_arrow(self):
         self.arrow_down_lab = tk.Label(self.frame2,image = self.resized_arrow_down_pic, bg = '#006665')
         self.arrow_down_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
         self.arrow_list.append(self.arrow_down_lab)
-        self.arrow_down_lab.bind('<B1-Motion>', self.move)
+        self.arrow_down_lab.bind('<B1-Motion>', self.widget_master)
         return
     def create_moment_ac(self):
         self.moment_ac_lab = tk.Label(self.frame2,image = self.resized_moment_ac_pic, bg = '#006665')
         self.moment_ac_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
         self.arrow_list.append(self.moment_ac_lab)
+        self.moment_ac_lab.bind('<B1-Motion>', self.widget_master)
         return
     def create_moment_c(self):
         self.moment_c_lab = tk.Label(self.frame2,image = self.resized_moment_c_pic, bg = '#006665')
         self.moment_c_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
         self.arrow_list.append(self.moment_c_lab)
+        self.moment_c_lab.bind('<B1-Motion>', self.widget_master)
         return
     def create_uniform_load(self):
         self.uniform_load_lab = tk.Label(self.frame2,image = self.resized_g_uniform_pic, bg = '#006665')
         self.uniform_load_lab.place(height = 40, width = 80, x=random.randrange(300,400), y=random.randrange(40,100))
         self.arrow_list.append(self.uniform_load_lab)
+        self.uniform_load_lab.bind('<B1-Motion>', self.widget_master)
         return
     def create_nonuniform_load(self):
         self.nonuniform_load_lab = tk.Label(self.frame2,image = self.resized_g_nonuniform_pic, bg = '#006665')
         self.nonuniform_load_lab.place(height = 40, width = 80, x=random.randrange(300,400), y=random.randrange(40,100))
         self.arrow_list.append(self.nonuniform_load_lab)
+        self.nonuniform_load_lab.bind('<B1-Motion>', self.widget_master)
         return
     
     # Creating supports
