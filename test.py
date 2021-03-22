@@ -14,6 +14,7 @@ class Dog:
         self.dal = ImageTk.PhotoImage(Image.open('images/bin.png').resize((80, 50), Image.ANTIALIAS))
         self.dal_button = tk.Button(self.win, text = 'button', command = self.delete_all)
         self.dal_button.place(width = 50, height = 80, x = 100, y=100)
+        self.entry1 = tk.Text(self.win, height =1, width = 2)
         self.puppy_list = []
         # print("Bin x : "+ str(self.bin_label.coords(x)), "Bin y : "+ str(self.bin_label.coords(y)))
         self.puppy_button.pack()
@@ -23,10 +24,16 @@ class Dog:
         x = self.win.winfo_pointerx() - self.win.winfo_rootx()
         y = self.win.winfo_pointery() - self.win.winfo_rooty()
         e.widget.place(height = 60, width = 50, x=x,y=y,anchor='center')
-        
+
     def delete(self, e):
         if((str(self.bin_label.winfo_rootx())[0] + str(self.bin_label.winfo_rootx())[1]) == (str(e.widget.winfo_rootx())[0] + str(e.widget.winfo_rootx())[1])) and ((str(self.bin_label.winfo_rooty())[0] + str(self.bin_label.winfo_rooty())[1]) == (str(e.widget.winfo_rooty())[0] + str(e.widget.winfo_rooty())[1])):
             e.widget.destroy()
+    
+    def add_input_field(self, e):
+        x = self.win.winfo_pointerx() - self.win.winfo_rootx()
+        y = self.win.winfo_pointery() - self.win.winfo_rooty()
+        self.entry1.place(x=x-8 , y = y-50)
+        
 
     def delete_all(self):
         for i in self.puppy_list:
@@ -36,6 +43,7 @@ class Dog:
     def master_move(self, e):
         self.move(e)
         self.delete(e)
+        self.add_input_field(e)
 
     def create_label(self):
         self.puppy_label = tk.Label(self.win, image = self.puppy, text = str(random.randint(1,3)))
