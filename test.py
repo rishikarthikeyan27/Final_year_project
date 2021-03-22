@@ -28,8 +28,10 @@ class Dog:
         if((str(self.bin_label.winfo_rootx())[0] + str(self.bin_label.winfo_rootx())[1]) == (str(e.widget.winfo_rootx())[0] + str(e.widget.winfo_rootx())[1])) and ((str(self.bin_label.winfo_rooty())[0] + str(self.bin_label.winfo_rooty())[1]) == (str(e.widget.winfo_rooty())[0] + str(e.widget.winfo_rooty())[1])):
             e.widget.destroy()
     
-    def add_input_field(self, e):
-        self.entry = self.Entry(self.win)
+    # def add_input_field(self, e):
+    #     print("New text created")
+    #     self.entry = self.Entry(self.win)
+    #     return self.entry
         
     def move_input(self, txt):
         x = self.win.winfo_pointerx() - self.win.winfo_rootx()
@@ -41,21 +43,22 @@ class Dog:
         for i in self.puppy_list:
             i.destroy()
 
-    def master_move(self, e):
+    def master_move(self, e, inp):
         self.move(e)
         self.delete(e)
-        self.move_input(self.entry.text)
-
+        self.move_input(inp)
+    
     def create_label(self):
         self.puppy_label = tk.Label(self.win, image = self.puppy, text = str(random.randint(1,3)))
         self.puppy_label.place(height = 60, width = 50, x= random.randint(300,400), y = random.randint(300, 400))
         self.puppy_list.append(self.puppy_label)
-        self.puppy_label.bind('<Button-1>', self.add_input_field)
+        self.entry = self.Entry(self.win)
         self.puppy_label.bind('<B1-Motion>', self.master_move)
+        self.puppy_label.bind('<B1-Motion>', lambda event, txt = self.entry.text: self.master_move(event, txt))
         return
     class Entry:
         def __init__(self, win):
-            self.text = tk.Text(win, height =1, width = 2)
+            self.text = tk.Text(win, height = 1, width = 2)
     
     
         
