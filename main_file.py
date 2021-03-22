@@ -114,11 +114,18 @@ class Window:
         self.force_type = ttk.OptionMenu(self.win, self.varList, "Cross section",'Rectangular', 'I', 'T', 'C', 'O', command = self.master_crossection_function)
         self.force_type.place(height=40, width=120, x = 90, y=350)
 
+        #Beam Length Label
+        self.beam_length_label = tk.Label(self.win, width = 50, height = 50, text = "Enter the beam length : ", bg = '#006665',font=("Helvetica",9, 'bold'))
+        self.beam_length_label.place(height = 30, width = 140, x=20, y=490)
+        #Enter length of beam
+        self.beam_length = tk.Entry(self.win)
+        self.beam_length.place(x = 160, y = 495)
+
         #Create the beam picture
         self.beam_pic = Image.open('images/beam.png').resize((400, 50), Image.ANTIALIAS)
         self.resized_beam_pic = ImageTk.PhotoImage(self.beam_pic)
         self.beam_lab = tk.Label(self.frame2, width = 400, height = 50, image = self.resized_beam_pic, bg = 'black')
-        self.beam_lab.place(x=150, y = 200)
+        self.beam_lab.place(x=150, y = 190)
 
         #Bin
         self.bin_pic = Image.open('images/bin.png').resize((50, 50), Image.ANTIALIAS)
@@ -136,6 +143,7 @@ class Window:
         self.das_button = tk.Button(self.frame2, image = self.delete_all_supports, bg = '#006665',command = self.del_all_supports)
         self.das_button.place(width = 60, height = 60, x = 70, y=15)
 
+
         #List of all the arrows that have been added
         self.arrow_list = []
 
@@ -144,6 +152,7 @@ class Window:
 
         #List of all inputs
         self.input_list = []
+
 
 
         #mainloop
