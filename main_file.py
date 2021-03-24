@@ -415,17 +415,29 @@ class Window:
             init+=1
         
         print("Label : " + str(self.beam_lab.winfo_x()))
+    
+    def print_nodes_and_elements(self):
+        self.nodes = 0
+        self.elements = 1
+        for i in self.support_list:
+            if i.cget("text") != "fixed":
+                self.nodes +=1
+                self.elements +=1
+        print ("Nodes : "+str(self.nodes))
+        print ("Elements : "+str(self.elements))
+            
         
     def length_in_meters(self):
         self.get_arrow_length()
         self.get_support_length()
+        self.print_nodes_and_elements()
     
     
     def to_calc(self, cross):
         #sending data over to calc file
         print(cf.print_test(self.beam_length_number.get(), cross))
 
-        
+    
     #Entry class
     class Entry:
         def __init__(self, win):
