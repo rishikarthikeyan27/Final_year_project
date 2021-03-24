@@ -2,6 +2,7 @@ import tkinter as tk
 import tkinter.ttk as ttk
 from PIL import ImageTk, Image
 import random
+import calc_file as cf
 
 class Window:
 
@@ -21,7 +22,7 @@ class Window:
         self.frame3.pack(fill=tk.Y, padx=5, pady=15,side=tk.BOTTOM, expand=False)
 
         # self.submit_button = tk.Button(self.frame3,
-        #                         text="Read Label Text", command = self.read_support_text)
+        #                         text="Read Label Text", command = self.to_calc)
         # self.submit_button.pack()
 
         #Load label
@@ -113,8 +114,9 @@ class Window:
 
         #Crossection Drop Down
         self.varList = tk.StringVar(self.win)
-        self.varList.set("Force Type")
-        self.force_type = ttk.OptionMenu(self.win, self.varList, "Cross section",'Rectangular', 'I', 'T', 'C', 'O', command = self.master_crossection_function)
+        self.varList.set("Crossection")
+        self.choice_list = ["Cross section",'Rectangular', 'I', 'T', 'C', 'O']
+        self.force_type = ttk.OptionMenu(self.win, self.varList, *self.choice_list, command = self.master_crossection_function)
         self.force_type.place(height=40, width=120, x = 90, y=350)
 
         self.beam_length_number = tk.StringVar()
@@ -303,7 +305,8 @@ class Window:
     
     # Crossection OptionMenu master function
     def master_crossection_function(self, choice):
-        self.display_crossection_picture(choice) 
+        self.display_crossection_picture(choice)
+        self.to_calc(choice)
 
     # Creating arrows
     def create_up_arrow(self):
@@ -389,14 +392,18 @@ class Window:
     def read_support_text(self):
         for i in self.support_list:
             print(i.cget('text'))
-            
+    
+    def to_calc(self, cross):
+        #sending data over to calc file
+        print(cf.print_test(self.beam_length_number.get(), cross))
+
+        
     #Entry class
     class Entry:
         def __init__(self, win):
             self.text = tk.Text(win, height = 1, width = 4)
     
-root = Window() 
-
+root = Window()
 
 
 
