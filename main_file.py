@@ -135,7 +135,7 @@ class Window:
 
         #0m
         self.beam_0 = tk.Label(self.frame2, text = "0m", bg = '#006665')
-        self.beam_0.place(width = 20, height = 20, x=140, y = 250)
+        self.beam_0.place(width = 20, height = 20, x=150, y = 250)
 
         
         #Bin
@@ -373,14 +373,14 @@ class Window:
     
     # Creating supports
     def create_simple_support(self):
-        self.simple_support_lab = tk.Label(self.win, text = "simple", image = self.resized_beam_simple_support)
+        self.simple_support_lab = tk.Label(self.frame2, text = "simple", image = self.resized_beam_simple_support)
         self.support_list.append(self.simple_support_lab)
         self.simple_support_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
         # print(self.support_list[0].cget("Text"))
         self.simple_support_lab.bind('<B1-Motion>', self.support_master)
         return
     def create_fixed_support(self):
-        self.fixed_support_lab = tk.Label(self.win, text = "fixed", image = self.resized_beam_fixed_support)
+        self.fixed_support_lab = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
         self.support_list.append(self.fixed_support_lab)
         self.fixed_support_lab.place(height = 100, width = 30, x=120, y = 170)
         self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
