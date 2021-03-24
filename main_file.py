@@ -20,9 +20,9 @@ class Window:
         self.frame3 = tk.Frame(master=self.win, width=680, height=315, bg="#006665")
         self.frame3.pack(fill=tk.Y, padx=5, pady=15,side=tk.BOTTOM, expand=False)
 
-        self.submit_button = tk.Button(self.frame3,
-                                text="Read Label Text", command = self.read_support_text)
-        self.submit_button.pack()
+        # self.submit_button = tk.Button(self.frame3,
+        #                         text="Read Label Text", command = self.read_support_text)
+        # self.submit_button.pack()
 
         #Load label
         self.load_selection_lab = ttk.Label(self.frame1, text = "Please Select Loads", background = '#006665', font=("Helvetica",9, 'bold'))
@@ -117,12 +117,15 @@ class Window:
         self.force_type = ttk.OptionMenu(self.win, self.varList, "Cross section",'Rectangular', 'I', 'T', 'C', 'O', command = self.master_crossection_function)
         self.force_type.place(height=40, width=120, x = 90, y=350)
 
+        self.beam_length_number = tk.StringVar()
         #Beam Length Label
         self.beam_length_label = tk.Label(self.win, width = 50, height = 50, text = "Enter the beam length : ", bg = '#006665',font=("Helvetica",9, 'bold'))
         self.beam_length_label.place(height = 30, width = 140, x=20, y=490)
         #Enter length of beam
-        self.beam_length = tk.Entry(self.win)
+        self.beam_length = tk.Entry(self.win, text = self.beam_length_number)
         self.beam_length.place(x = 160, y = 495)
+        self.submit = tk.Button(self.win, text = "Submit", command = self.add_beam_length_label)
+        self.submit.place(height = 30, width = 140, x=60, y=550)
 
         #Create the beam picture
         self.beam_pic = Image.open('images/beam.png').resize((400, 50), Image.ANTIALIAS)
@@ -130,6 +133,11 @@ class Window:
         self.beam_lab = tk.Label(self.frame2, width = 400, height = 50, image = self.resized_beam_pic, bg = 'black')
         self.beam_lab.place(x=150, y = 190)
 
+        #0m
+        self.beam_0 = tk.Label(self.frame2, text = "0m", bg = '#006665')
+        self.beam_0.place(width = 20, height = 20, x=140, y = 250)
+
+        
         #Bin
         self.bin_pic = Image.open('images/bin.png').resize((50, 50), Image.ANTIALIAS)
         self.resized_bin_pic = ImageTk.PhotoImage(self.bin_pic)
@@ -158,6 +166,13 @@ class Window:
 
         #mainloop
         self.win.mainloop()
+
+    def add_beam_length_label(self):
+        lab_num = self.beam_length_number.get()
+        self.beam_l = tk.Label(self.frame2, text = str(lab_num) + "m", bg = '#006665')
+        width_ = 20+len(lab_num)+15
+        self.beam_l.place(width = width_, height = 20, x=540, y = 250)
+
 
     #Widget delete
     def delete(self, e, inp):        
@@ -204,6 +219,9 @@ class Window:
         if((str(self.bin_label.winfo_rootx())[0] + str(self.bin_label.winfo_rootx())[1]) == (str(e.widget.winfo_rootx())[0] + str(e.widget.winfo_rootx())[1])) and ((str(self.bin_label.winfo_rooty())[0] + str(self.bin_label.winfo_rooty())[1]) == (str(e.widget.winfo_rooty())[0] + str(e.widget.winfo_rooty())[1])):
             e.widget.destroy()
             print("Done destroying")
+
+    def trial(self):
+            print (self.beam_length_number.get())
     
     #Move Support
     def move_support(self, e):
