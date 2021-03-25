@@ -148,9 +148,19 @@ class Window:
         self.beam_lab = tk.Label(self.frame2, width = 400, height = 50, image = self.resized_beam_pic, bg = 'black')
         self.beam_lab.place(x=40, y = 190)
 
+        #Crossection Canvas
+        self.cross_canvas = tk.Canvas(self.frame2, highlightthickness = 0)
+        self.cross_canvas.place(width = 100, height = 100, x= 500, y = 160)
+
+        #Crossection Label 
+        self.cross_label = tk.Label(self.frame2, bg = '#006665', text = 'Crossection', fg = 'white', font=("Helvetica",9, 'bold'))
+        self.cross_label.place(width = 100, height = 50, x = 500, y = 270)
+
+
         #0m
         self.beam_0 = tk.Label(self.frame2, text = "0m", bg = '#006665')
         self.beam_0.place(width = 20, height = 20, x=40, y = 250)
+
 
         
         #Bin
@@ -263,7 +273,7 @@ class Window:
     # Displays crossection picture  
     def display_crossection_picture(self, c):
         if(c == "Rectangular"):
-            #add Rectangle cross section picture
+            #add Rectangle cross section picture on frame1
             img = Image.open('images/r.png').resize((60, 60), Image.ANTIALIAS)
             img = img
             resized_image = ImageTk.PhotoImage(img)
@@ -274,7 +284,11 @@ class Window:
             img_label.update()
             print("hello")
             img_label.place(x= 100, y=400)
-            # img_canvas.create_image(40, 30, image = resized_image, tag = "R")
+            
+            #add Rectangular cross section picture on frame 2
+            self.rect = ImageTk.PhotoImage(Image.open('images/r_crossection.png').resize((100, 100), Image.ANTIALIAS))
+            self.cross_canvas.create_image(50, 50,image = self.rect)
+            
         if(c == "I"):
             #add I cross section picture
             img = Image.open('images/i_beam.png').resize((60, 60), Image.ANTIALIAS)
