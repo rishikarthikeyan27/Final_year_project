@@ -192,6 +192,7 @@ class Window:
         #crossection canvas list
         self.cross_canvas_list = []
 
+
         #mainloop
         self.win.mainloop()
 
@@ -226,6 +227,7 @@ class Window:
 
     #Move input along with arrows (up)
     def move_input_up(self, e,txt):
+        
         ex = e.widget.master.winfo_pointerx() - e.widget.master.winfo_rootx()
         ey = e.widget.master.winfo_pointery() - e.widget.master.winfo_rooty()
         e.widget.place(height = e.widget.winfo_height(), width = e.widget.winfo_width(), x=ex,y=ey,anchor='center')
@@ -258,16 +260,18 @@ class Window:
         e.widget.place(height = e.widget.winfo_height(), width = e.widget.winfo_width(), x=ex,y=ey,anchor='center')
     
     #widget master up
-    def widget_master_up(self, e, inp):
+    def widget_master_up(self, e, inp, lab):
         # self.move(e)
         self.delete(e, inp)
         self.move_input_up(e, inp)
+        self.add_dist_lab_up(e, lab)
 
     #widget master down
-    def widget_master_down(self, e, inp):
+    def widget_master_down(self, e, inp, rel_len):
         # self.move(e)
         self.delete(e, inp)
         self.move_input_down(e, inp)
+        # self.add_dist_lab_down(e,rel_len)
     
     def support_master(self, e):
         self.delete_support(e)
@@ -385,7 +389,8 @@ class Window:
         self.arrow_down_lab.place(height = 30, width = 30, x=random.randrange(130,140), y=random.randrange(140,150), anchor = "c")
         self.arrow_list.append(self.arrow_down_lab)
         self.entry = self.Entry(self.win)
-        self.arrow_down_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text: self.widget_master_up(event, txt))
+        self.arrow_len = self.len_lab(self.frame2)
+        self.arrow_down_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text, lab = self.arrow_len.arrow_rel_len_lab: self.widget_master_up(event, txt , lab))
         self.input_list.append(self.entry.text)
         return
     def create_moment_ac(self):
@@ -457,15 +462,12 @@ class Window:
             print(i.cget('text'))
 
 
-    def get_arrow_length(self):
+    def get_arrow_length(self, wid):
         entry = int(self.beam_length_number.get())
         print(entry)
         init = 1
-        for i in self.arrow_list:
-            # print("In meters : " + str(math.floor((int(entry)/400)*(int(i.winfo_x())-610))))
-            print("In meters : " + str((int(entry)/400)*(int(i.winfo_x())-150)))
-            print("Arrow"+str(init)+" : "+str(i.winfo_x()))
-            init+=1
+        # print("In meters : " + str(math.floor((int(entry)/400)*(int(i.winfo_x())-610))))
+        return (int(entry)/400)*(int(wid.winfo_x())-40)
 
     def get_support_length(self):
         entry = int(self.beam_length_number.get())
@@ -498,6 +500,23 @@ class Window:
         self.get_arrow_length()
         self.get_support_length()
         self.print_nodes_and_elements()
+
+    def add_dist_lab_up(self, e, lab):
+        
+        self.lenn = round(self.get_arrow_length(e.widget), 2)
+        if self.lenn > (int(self.beam_length_number.get())+0.3):
+            self.lenn = self.lenn+0.3
+        lab.config(text = str(self.lenn+0.5))
+        ex = e.widget.master.winfo_pointerx() - e.widget.master.winfo_rootx()
+        ey = e.widget.master.winfo_pointery() - e.widget.master.winfo_rooty()
+        if self.lenn <= int(self.beam_length_number.get()):
+            lab.place(height = e.widget.winfo_height(), width = e.widget.winfo_width(), x=ex+7,y=ey-55,anchor='center')
+
+        
+
+
+        
+        
     
     def info(self):
         #get number of nodes
@@ -510,6 +529,11 @@ class Window:
     class Entry:
         def __init__(self, win):
             self.text = tk.Text(win, height = 1, width = 4)
+    class len_lab:
+        def __init__(self, win):
+            self.arrow_rel_len_lab = tk.Label(win)
+            print("new label")
+            
     
 root = Window()
 
