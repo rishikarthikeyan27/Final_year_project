@@ -37,4 +37,12 @@ def calc_c_i(B, h, H, b):
 
 print(calc_c_i(100,30,100,30))
 
+def calc_i_i():
+    pass
+
+def calc_r_i(B,H):
+    r_i = (1/12)*B*(H**3)
+    return r_i
+
+
 
