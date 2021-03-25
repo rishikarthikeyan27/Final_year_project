@@ -119,6 +119,7 @@ class Window:
         self.force_type = ttk.OptionMenu(self.win, self.varList, *self.choice_list, command = self.master_crossection_function)
         self.force_type.place(height=40, width=120, x = 90, y=350)
 
+        #Beam Length
         self.beam_length_number = tk.StringVar()
         #Beam Length Label
         self.beam_length_label = tk.Label(self.win, width = 50, height = 50, text = "Beam Length : ", bg = '#006665',font=("Helvetica",9, 'bold'))
@@ -145,11 +146,11 @@ class Window:
         self.beam_pic = Image.open('images/beam.png').resize((400, 50), Image.ANTIALIAS)
         self.resized_beam_pic = ImageTk.PhotoImage(self.beam_pic)
         self.beam_lab = tk.Label(self.frame2, width = 400, height = 50, image = self.resized_beam_pic, bg = 'black')
-        self.beam_lab.place(x=150, y = 190)
+        self.beam_lab.place(x=40, y = 190)
 
         #0m
         self.beam_0 = tk.Label(self.frame2, text = "0m", bg = '#006665')
-        self.beam_0.place(width = 20, height = 20, x=150, y = 250)
+        self.beam_0.place(width = 20, height = 20, x=40, y = 250)
 
         
         #Bin
@@ -185,7 +186,7 @@ class Window:
         lab_num = self.beam_length_number.get()
         self.beam_l = tk.Label(self.frame2, text = str(lab_num) + "m", bg = '#006665')
         width_ = 20+len(lab_num)+15
-        self.beam_l.place(width = width_, height = 20, x=540, y = 250)
+        self.beam_l.place(width = width_, height = 20, x=430, y = 250)
 
 
     #Widget delete
@@ -397,7 +398,7 @@ class Window:
     def create_fixed_support(self):
         self.fixed_support_lab = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
         self.support_list.append(self.fixed_support_lab)
-        self.fixed_support_lab.place(height = 100, width = 30, x=120, y = 170)
+        self.fixed_support_lab.place(height = 100, width = 30, x=10, y = 170)
         self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
         return
     
