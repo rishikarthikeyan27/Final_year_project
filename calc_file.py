@@ -45,5 +45,17 @@ def calc_obeam_i(r):
     o_i = ((3.14)*(r**4))/4
     return o_i
 
+def stiffness_matrix(E,I, l):
+    K = []
+    c = ((E*I)/L**3)
+    K = [[c*12, c*6*L, -12*c, 6*L*c]
+        ,[6*L*c, (4 *c* (L**2)), -6*L*c, (2*c*(L**2))]
+        ,[-12*c, -6*L*c, 12*c, -6*L*c]
+        ,[6*L*c, (2*c*(L**2)), -6*L*c, (4*c*(L**2))]]
+    return K
+
+
+    
+     
 
 
