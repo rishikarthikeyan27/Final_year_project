@@ -202,7 +202,9 @@ class Window:
 
         #crossection entry fields
         self.cross_entry = []
-
+        
+        #support choice list
+        self.support_choice_list = []
 
         #mainloop
         self.win.mainloop()
@@ -211,7 +213,7 @@ class Window:
         lab_num = self.beam_length_number.get()
         self.beam_l = tk.Label(self.frame2, text = str(lab_num) + "m", bg = '#006665')
         width_ = 20+len(lab_num)+15
-        self.beam_l.place(width = width_, height = 20, x=430, y = 250)
+        self.beam_l.place(width = width_, height = 20, x=410, y = 250)
 
 
     #Widget delete
@@ -552,16 +554,60 @@ class Window:
         self.simple_support_lab.bind('<B1-Motion>', self.support_master)
         return
     def create_fixed_support_left(self):
-        self.fixed_support_lab = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
-        self.support_list.append(self.fixed_support_lab)
-        self.fixed_support_lab.place(height = 100, width = 30, x=10, y = 170)
-        self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
-        self.support_choice_list.append(self.fixed_support_lab)
+        if(len(self.support_choice_list)):
+            for i in self.support_choice_list:
+                i.destroy()
+            self.support_choice_list.clear()
+        self.fixed_support_lab_left = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
+        self.fixed_support_lab_left.place(height = 100, width = 30, x=10, y = 170)
+        self.support_list.append(self.fixed_support_lab_left)
+        # self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
+        self.support_choice_list.append(self.fixed_support_lab_left)
+        return
+    def create_fixed_support_right(self):
+        if(len(self.support_choice_list)):
+            for i in self.support_choice_list:
+                i.destroy()
+            self.support_choice_list.clear()
+        self.fixed_support_lab_right = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
+        self.fixed_support_lab_right.place(height = 100, width = 30, x=445, y = 170)
+        self.support_list.append(self.fixed_support_lab_right)
+        self.support_choice_list.append(self.fixed_support_lab_right)
+        return
+    def create_fixed_support_end(self):
+        if(len(self.support_choice_list)):
+            for i in self.support_choice_list:
+                i.destroy()
+            self.support_choice_list.clear()
+
+        self.fixed_support_lab_1 = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
+        self.fixed_support_lab_1.place(height = 100, width = 30, x=10, y = 170)
+        self.support_list.append(self.fixed_support_lab_1)
+        self.support_choice_list.append(self.fixed_support_lab_1)
+
+        self.fixed_support_lab_2 = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
+        self.fixed_support_lab_2.place(height = 100, width = 30, x=445, y = 170)
+        self.support_list.append(self.fixed_support_lab_2)
+        self.support_choice_list.append(self.fixed_support_lab_2)
+        # self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
+        return
+
+    def create_no_fixed_support(self):
+        if(len(self.support_choice_list)):
+            for i in self.support_choice_list:
+                i.destroy()
+            self.support_choice_list.clear()
         return
 
     def master_support(self, choice):
         if choice == "Fixed Left":
             self.create_fixed_support_left()
+        elif choice == "Fixed Right":
+            self.create_fixed_support_right()
+        elif choice == "Fixed Ended":
+            self.create_fixed_support_end()
+        elif choice == "No Fixed Support":
+            self.create_no_fixed_support()
     
     def read_support_text(self):
         for i in self.support_list:
