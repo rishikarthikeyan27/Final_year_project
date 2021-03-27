@@ -108,8 +108,16 @@ class Window:
         self.varList.set("Crossection")
         self.choice_list = ["Cross section",'Rectangular', 'I', 'T', 'C', 'O']
         self.force_type = ttk.OptionMenu(self.win, self.varList, *self.choice_list, command = self.master_crossection_function)
-        self.force_type.place(height=40, width=120, x = 90, y=230)
+        self.force_type.place(height=40, width=120, x = 30, y=250)
 
+        # Radio button menu
+        self.varsupport = tk.StringVar(self.win)
+        self.varsupport.set("Support")
+        self.support_list = ["Support", "Fixed Left",'Fixed Right', 'Fixed Ended', 'No Fixed Support']
+        self.support_type = ttk.OptionMenu(self.win, self.varsupport, *self.support_list, command = self.master_support)
+        self.support_type.place(height=40, width=120, x = 150, y=250)
+
+        
         #Support label
         self.support_selection_lab = ttk.Label(self.frame1, text = "Please Select Supports", background = '#006665', font=("Helvetica",9, 'bold'))
         self.support_selection_lab.place(height = 30, width = 140, x=70, y=450)
@@ -179,7 +187,7 @@ class Window:
         self.das_button = tk.Button(self.frame2, image = self.delete_all_supports, bg = '#006665',command = self.del_all_supports)
         self.das_button.place(width = 60, height = 60, x = 70, y=15)
 
-
+        
         #List of all the arrows that have been added
         self.arrow_list = []
 
@@ -280,8 +288,7 @@ class Window:
         self.delete_support(e)
         self.move_support(e)
 
-    # Radio button menu
-    
+
     
     # Displays crossection picture  
     def display_crossection_picture(self, c):
@@ -544,12 +551,17 @@ class Window:
         # print(self.support_list[0].cget("Text"))
         self.simple_support_lab.bind('<B1-Motion>', self.support_master)
         return
-    # def create_fixed_support(self):
-    #     self.fixed_support_lab = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
-    #     self.support_list.append(self.fixed_support_lab)
-    #     self.fixed_support_lab.place(height = 100, width = 30, x=10, y = 170)
-    #     self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
+    def create_fixed_support_left(self):
+        self.fixed_support_lab = tk.Label(self.frame2, text = "fixed", image = self.resized_beam_fixed_support)
+        self.support_list.append(self.fixed_support_lab)
+        self.fixed_support_lab.place(height = 100, width = 30, x=10, y = 170)
+        self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
+        self.support_choice_list.append(self.fixed_support_lab)
         return
+
+    def master_support(self, choice):
+        if choice == "Fixed Left":
+            self.create_fixed_support_left()
     
     def read_support_text(self):
         for i in self.support_list:
