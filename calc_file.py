@@ -1,5 +1,52 @@
 #Remember that this file is strictly for just calculations, so tkinter stuff must be going on
+def calc_rbeam_centroid(B, H):
+    centroid = H/2
+    return centroid
+    
+def calc_tbeam_centroid(B,h,H, b):
+    centroid_numerator = ((H+(h/2))*(B*h))+((H/2)*(b*H))
+    centroid_denominator = ((B*h)+(b*H))
+    centroid = centroid_numerator/centroid_denominator
 
+def calc_ibeam_centroid(B, h, H, b):
+    A1 = B*h 
+    y1 = h+H+(h/2)
+
+    A2 = b*H 
+    y2 = h+(H/2)
+
+    A3 = B*h 
+    y3 = h+H+(h/2)
+
+    centroid_numerator = (A1*y1)+(A2*y2)+(A3*y3)
+    centroid_denominator = (A1+A2+A3)
+
+    centroid = (centroid_numerator/centroid_denominator)
+
+    return centroid
+
+def calc_cbeam_centroid(B, h, H, b):
+    A1 = B*h 
+    y1 = h+H+(h/2)
+
+    A2 = b*H 
+    y2 = h+(H/2)
+
+    A3 = B*h 
+    y3 = h+H+(h/2)
+
+    centroid_numerator = (A1*y1)+(A2*y2)+(A3*y3)
+    centroid_denominator = (A1+A2+A3)
+
+    centroid = (centroid_numerator/centroid_denominator)
+
+    return centroid
+
+
+def calc_obeam_centroid(r):
+    pass
+
+print(calc_ibeam_centroid(250, 38, 300, 25))
 def calc_tbeam_i(B, h, H, b):
     centroid_numerator = ((H+(h/2))*(B*h))+((H/2)*(b*H))
     centroid_denominator = ((B*h)+(b*H))
@@ -57,9 +104,20 @@ def stiffness_matrix(E,I, l):
 def calc_static_indeterminacy(no_of_reactions):
     return (no_of_reactions - 3)
 
-def return_q(d):
+def return_q(type_of_beam, d):
     #d here is the distance between the line of consideration and neutral axis
-    pass
+    #'Rectangular', 'I', 'T', 'C', 'O'
+    if type_of_beam == "Rectangular":
+        pass
+    elif type_of_beam == "I":
+        pass
+    elif type_of_beam == "T":
+        pass
+    elif type_of_beam == "C":
+        pass
+    elif type_of_beam == "O":
+        pass
+    
 
 
     
