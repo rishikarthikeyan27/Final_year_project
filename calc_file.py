@@ -54,6 +54,9 @@ def stiffness_matrix(E,I, l):
         ,[6*L*c, (2*c*(L**2)), -6*L*c, (4*c*(L**2))]]
     return K
 
+def calc_static_indeterminacy(no_of_reactions):
+    return (no_of_reactions - 3)
+
 
     
      

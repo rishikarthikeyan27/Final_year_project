@@ -217,14 +217,15 @@ class Window:
         self.beam_l = tk.Label(self.frame2, text = str(lab_num) + "m", bg = '#006665')
         width_ = 20+len(lab_num)+15
         self.beam_l.place(width = width_, height = 20, x=410, y = 270)
-        x = 0
-        if len(self.support_list)>=1:
-            for i in self.support_list:
-                if (i.cget('text') == 'fixed'):
-                    x+=1
-        else:
-            x=0
-        print('No.of fixed supports : ' + str(x))
+        # x = 0
+        # if len(self.support_list)>=1:
+        #     for i in self.support_list:
+        #         if (i.cget('text') == 'fixed'):
+        #             x+=1
+        # else:
+        #     x=0
+        # print('No.of fixed supports : ' + str(x))
+        self.calc_reactions()
 
 
     #Widget delete
@@ -567,19 +568,19 @@ class Window:
     
     # Creating supports
     def create_simple_support(self):
-        self.simple_support_lab = tk.Label(self.frame2, text = "simple", image = self.resized_beam_simple_support)
-        self.support_list.append(self.simple_support_lab)
+        self.simple_support_lab = tk.Label(self.frame2, text = 'pinned', image = self.resized_beam_simple_support)
         self.simple_support_lab.place(height = 30, width = 30, x=random.randrange(300,400), y=random.randrange(40,100))
         # print(self.support_list[0].cget("Text"))
         self.simple_support_lab.bind('<B1-Motion>', self.support_master)
+        self.support_list.append(self.simple_support_lab)
         return
 
     def create_roller_support(self):
-        self.roller_support_lab = tk.Label(self.frame2, text = "simple", image = self.resized_roller_support_pic, bg = "#006665")
-        self.support_list.append(self.roller_support_lab)
+        self.roller_support_lab = tk.Label(self.frame2, text = 'roller', image = self.resized_roller_support_pic, bg = "#006665")
         self.roller_support_lab.place(height = 25, width = 25, x=random.randrange(300,400), y=random.randrange(40,100))
         # print(self.support_list[0].cget("Text"))
         self.roller_support_lab.bind('<B1-Motion>', self.support_master)
+        self.support_list.append(self.roller_support_lab)
         return
     
     def create_fixed_support_left(self):
@@ -721,10 +722,20 @@ class Window:
         if self.lenn <= int(self.beam_length_number.get()):
             lab.place(height = e.widget.winfo_height(), width = e.widget.winfo_width(), x=ex+27,y=ey,anchor='center')
     
-    # def calc_reactions(self):
-    #     self.no_of_reactions = 0
-    #     for i in self.support_list:
-    #         if i.cget('text' == 'fixed'):
+    def calc_reactions(self):
+        self.no_of_reactions = 0
+        if len(self.support_list)>=1:
+            print("Length of support list : " + str(len(self.support_list)))
+            for i in self.support_list:
+                print(i.cget('text'))
+                if (i.cget('text') == 'fixed'):
+                    self.no_of_reactions +=3
+                elif (i.cget('text') == 'pinned'):
+                    self.no_of_reactions += 2 
+                elif (i.cget('text') == 'roller'):
+                    self.no_of_reactions +=1
+        print("Total no.of reactions : " + str(self.no_of_reactions))
+        print("Static indeterminacy : " + str(cf.calc_static_indeterminacy(self.no_of_reactions)))
 
     
 
