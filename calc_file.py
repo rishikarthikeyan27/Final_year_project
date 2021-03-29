@@ -286,7 +286,6 @@ def calc_cbeam_shear_stress(shear_force, B, h, H, b):
 def calc_tbeam_shear_stress(shear_force, B, h, H, b):
     V = shear_force
     i = calc_tbeam_i(B, h, H, b)
-    i_rec = calc_rbeam_i(B, h)
     print("i", i)
     centroid = calc_tbeam_centroid(B, h, H, b)
     y = H+h-centroid
@@ -357,4 +356,45 @@ def calc_tbeam_shear_stress(shear_force, B, h, H, b):
     return
 
 
-calc_tbeam_shear_stress(200000, 125, 25, 175, 25)
+def calc_obeam_shear_stress(shear_force, r):
+    V = shear_force
+    i = calc_obeam_i(r)
+  
+    print("i", i)
+    y=r
+    huge_list = []
+    x = True
+    print("y",y)
+    while x:
+        print("While true")
+        if (y>0):
+            tou = (4*shear_force*((r**2)-(y**2)))/(3*3.14*(r**4))
+            huge_list.append(tou)
+            y-=1
+        elif ((y<=0) and (y>= (-r))):
+            tou =  (4*shear_force*((r**2)-((-y)**2)))/(3*3.14*(r**4))  
+            huge_list.append(tou)
+            y-=1
+        else:
+            x = False
+    y = []
+    start = r
+    finish = -r-1
+    for i in range(start, finish, -1):
+        y.append(i)
+    y = np.array(y)
+    x = np.array(huge_list)
+    print("X : ", len(x))
+    print("Y : ", len(y))
+
+    plt.title("Matplotlib demo") 
+    plt.xlabel("Shear Stress in MPa") 
+    plt.ylabel("Beam height in mm") 
+
+    plt.plot(x, y) 
+    plt.show()
+    print('The maximum shear stress is : ',max_shear_stress(max(huge_list)))
+    
+    return
+
+calc_obeam_shear_stress(58, 1000)
