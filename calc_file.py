@@ -107,6 +107,9 @@ def stiffness_matrix(E,I, l):
 def calc_static_indeterminacy(no_of_reactions):
     return (no_of_reactions - 3)
 
+def max_shear_stress(x):
+    print('The maximum shear stress is : ', x)
+
 def calc_rbeam_shear_stress(shear_force, B, H):
     V = shear_force
     i = 80000000
@@ -131,7 +134,9 @@ def calc_rbeam_shear_stress(shear_force, B, H):
         else:
             x = False
     y = []
-    for i in range(1, H+2):
+    start = int(-H/2)
+    finish = (int(H/2)+1)
+    for i in range(start, finish):
         y.append(i)
     x = np.array(huge_list)
     plt.title("Matplotlib demo") 
@@ -139,7 +144,7 @@ def calc_rbeam_shear_stress(shear_force, B, H):
     plt.ylabel("y axis caption") 
     plt.plot(x, y) 
     plt.show()
-
+    max_shear_stress(max(huge_list))
     return
 
 calc_rbeam_shear_stress(8000, 120, 200)
