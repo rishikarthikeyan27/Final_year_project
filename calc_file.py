@@ -1,8 +1,12 @@
 #Remember that this file is strictly for just calculations, so tkinter stuff must be going on
+
+import numpy as np
+import matplotlib.pyplot as plt
+
 def calc_rbeam_centroid(B, H):
     centroid = H/2
     return centroid
-    
+
 def calc_tbeam_centroid(B,h,H, b):
     centroid_numerator = ((H+(h/2))*(B*h))+((H/2)*(b*H))
     centroid_denominator = ((B*h)+(b*H))
@@ -46,7 +50,6 @@ def calc_cbeam_centroid(B, h, H, b):
 def calc_obeam_centroid(r):
     pass
 
-print(calc_ibeam_centroid(250, 38, 300, 25))
 def calc_tbeam_i(B, h, H, b):
     centroid_numerator = ((H+(h/2))*(B*h))+((H/2)*(b*H))
     centroid_denominator = ((B*h)+(b*H))
@@ -104,23 +107,39 @@ def stiffness_matrix(E,I, l):
 def calc_static_indeterminacy(no_of_reactions):
     return (no_of_reactions - 3)
 
-def return_q(type_of_beam, d):
-    #d here is the distance between the line of consideration and neutral axis
-    #'Rectangular', 'I', 'T', 'C', 'O'
-    if type_of_beam == "Rectangular":
-        pass
-    elif type_of_beam == "I":
-        pass
-    elif type_of_beam == "T":
-        pass
-    elif type_of_beam == "C":
-        pass
-    elif type_of_beam == "O":
-        pass
-    
+def calc_rbeam_shear_stress(shear_force, B, H):
+    V = shear_force
+    i = 80000000
+    print("i : ", i)
+    centroid = calc_rbeam_centroid(B, H)
+    print("centroid : ", centroid)
+    Q = 0
+    y = H/2
+    huge_list = []
+    x = True
+    while x:
+        print("while true")
+        if (y >= (-H/2)) and (y <= H/2):
+            print("if")
+            A = B*((H/2)-y)
+            y_dash = (1/2)*((H/2)+y)
+            Q = A * y_dash
+            tou = ( (V/(2*i))*(((H**2)/4) - (y**2)) )
+            tou = tou*1000
+            huge_list.append(tou)
+            y-=1
+        else:
+            x = False
+    y = []
+    for i in range(1, H+2):
+        y.append(i)
+    x = np.array(huge_list)
+    plt.title("Matplotlib demo") 
+    plt.xlabel("x axis caption") 
+    plt.ylabel("y axis caption") 
+    plt.plot(x, y) 
+    plt.show()
 
+    return
 
-    
-     
-
-
+calc_rbeam_shear_stress(8000, 120, 200)
