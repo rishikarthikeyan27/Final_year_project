@@ -397,4 +397,10 @@ def calc_obeam_shear_stress(shear_force, r):
     
     return
 
+# helps interpret the whole front end
+
+def get_results(loads_list, supports_list, dimensions_dict):
+    pass
+
+
 
