@@ -658,6 +658,7 @@ class Window:
         # print(self.support_list[0].cget("Text"))
         self.simple_support_lab.bind('<B1-Motion>', lambda event , lab = self.arrow_len.arrow_rel_len_lab : self.support_master(event, lab))
         self.support_list.append(self.simple_support_lab)
+        self.grand_support_list.append([self.simple_support_lab, self.arrow_len.arrow_rel_len_lab])
         return
 
     def create_roller_support(self):
@@ -667,6 +668,7 @@ class Window:
         # print(self.support_list[0].cget("Text"))
         self.roller_support_lab.bind('<B1-Motion>', lambda event , lab = self.arrow_len.arrow_rel_len_lab : self.support_master(event, lab))
         self.support_list.append(self.roller_support_lab)
+        self.grand_support_list.append([self.roller_support_lab, self.arrow_len.arrow_rel_len_lab])
         return
     
     def create_fixed_support_left(self):
@@ -683,6 +685,7 @@ class Window:
         self.support_list.append(self.fixed_support_lab_left)
         # self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
         self.support_choice_list.append(self.fixed_support_lab_left)
+        
         return
     def create_fixed_support_right(self):
         if(len(self.support_list)):
@@ -697,6 +700,7 @@ class Window:
         self.fixed_support_lab_right.place(height = 100, width = 30, x=445, y = 170)
         self.support_list.append(self.fixed_support_lab_right)
         self.support_choice_list.append(self.fixed_support_lab_right)
+
         return
     def create_fixed_support_end(self):
         if(len(self.support_list)):
@@ -719,7 +723,6 @@ class Window:
         self.support_choice_list.append(self.fixed_support_lab_2)
         # self.fixed_support_lab.bind('<B1-Motion>', self.support_master)
         return
-
     def create_no_fixed_support(self):
         if(len(self.support_list)):
             for i in self.support_list:
@@ -867,6 +870,7 @@ class Window:
         self.add_beam_length_label()
         self.get_arrow_final_length(lis)
         print("Arrow details : ")
+
         for i in range(0, len(self.grand_load_list)):
             for j in range(0, len(self.grand_load_list[i])):
                 if j == 0:
@@ -875,16 +879,15 @@ class Window:
                     print(self.grand_load_list[i][j].get(1.0, "end-1c"))
                 elif j == 2:
                     print(self.grand_load_list[i][j].cget('text'))
+        
+        for k in range(0, len(self.grand_support_list)):
+            for l in range(0, len(self.grand_support_list[k])):
+                if l == 0:
+                    print(self.grand_support_list[k][l].cget('text'))
+                elif l == 1:
+                    print(self.grand_support_list[k][l].cget('text'))
+                    
             
-
-        # #generating dictionary
-        # # The dictionary will include the arrow position relative to the beam as the key
-        # # and it will
-
-        # for i in self.input_list:
-        #     print(i.get(1.0, "end-1c"))
-    
-    
     
     
     
