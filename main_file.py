@@ -212,6 +212,9 @@ class Window:
         #Arrow load list
         self.arrow_load = []
 
+        #Dimensions Done button list
+        self.done_button_list = []
+
         #mainloop
         self.win.mainloop()
 
@@ -335,6 +338,15 @@ class Window:
             self.entry_r_H = self.Entry(self.frame2)
             self.entry_r_H.text.place(x = 520, y = 27)
             self.cross_entry.extend([self.entry_r_H.text, self.entry_r_H_lab])
+            
+            if len(self.done_button_list)>=1:
+                for i in self.done_button_list:
+                    i.destroy()
+                self.done_button_list.clear()
+                
+            self.done_dimensions = tk.Button(self.frame2, text = 'Done', command = self.get_dimensions_r)
+            self.done_dimensions.place(width = 40, height = 20, x=570, y = 30)
+            self.done_button_list.append(self.done_dimensions)
 
             
         if(c == "I"):
@@ -377,6 +389,15 @@ class Window:
             self.entry_i_h = self.Entry(self.frame2)
             self.entry_i_h.text.place(x = 630, y = 27)
             self.cross_entry.extend([self.entry_i_h.text, self.entry_i_h_lab])
+
+            if len(self.done_button_list)>=1:
+                for i in self.done_button_list:
+                    i.destroy()
+                self.done_button_list.clear()
+
+            self.done_dimensions = tk.Button(self.frame2, text = 'Done', command = self.get_dimensions_i)
+            self.done_dimensions.place(width = 40, height = 20, x=570, y = 60)
+            self.done_button_list.append(self.done_dimensions)
         
         if(c == "T"):
             
@@ -419,6 +440,15 @@ class Window:
             self.entry_t_h.text.place(x = 630, y = 27)
             self.cross_entry.extend([self.entry_t_h.text, self.entry_t_h_lab])
 
+            if len(self.done_button_list)>=1:
+                for i in self.done_button_list:
+                    i.destroy()
+                self.done_button_list.clear()
+
+            self.done_dimensions = tk.Button(self.frame2, text = 'Done', command = self.get_dimensions_t)
+            self.done_dimensions.place(width = 40, height = 20, x=570, y = 60)
+            self.done_button_list.append(self.done_dimensions)
+
         if(c == "C"):
             
             #add C cross section picture on frame 2
@@ -459,6 +489,15 @@ class Window:
             self.entry_c_h.text.place(x = 630, y = 27)
             self.cross_entry.extend([self.entry_c_h.text, self.entry_c_h_lab])
 
+            if len(self.done_button_list)>=1:
+                for i in self.done_button_list:
+                    i.destroy()
+                self.done_button_list.clear()
+
+            self.done_dimensions = tk.Button(self.frame2, text = 'Done', command = self.get_dimensions_c)
+            self.done_dimensions.place(width = 40, height = 20, x=570, y = 60)
+            self.done_button_list.append(self.done_dimensions)
+
         if(c == "O"):
            
             #add C cross section picture on frame 2
@@ -480,6 +519,15 @@ class Window:
             self.entry_o_r = self.Entry(self.frame2)
             self.entry_o_r.text.place(x = 520, y = 27)
             self.cross_entry.extend([self.entry_o_r.text, self.entry_o_r_lab])
+
+            if len(self.done_button_list)>=1:
+                for i in self.done_button_list:
+                    i.destroy()
+                self.done_button_list.clear()
+            
+            self.done_dimensions = tk.Button(self.frame2, text = 'Done', command = self.get_dimensions_o)
+            self.done_dimensions.place(width = 40, height = 20, x=570, y = 60)
+            self.done_button_list.append(self.done_dimensions)
     
     # Crossection OptionMenu master function
     def master_crossection_function(self, choice):
@@ -753,8 +801,38 @@ class Window:
         
 
     def add_manual_arrow_location(self):
-                
+        pass
 
+    def get_dimensions_r(self):
+        
+        self.dimensions_dict = {"B" : self.entry_r_B.text.get(1.0, "end-1c"), "H" : self.entry_r_H.text.get(1.0, "end-1c")}
+        return self.dimensions_dict
+    
+    def get_dimensions_i(self):
+        
+        self.dimensions_dict = {"B" : self.entry_i_B.text.get(1.0, "end-1c"), "h": self.entry_i_h.text.get(1.0, "end-1c"), "H" : self.entry_i_H.text.get(1.0, "end-1c"), "b" : self.entry_i_b.text.get(1.0, "end-1c")}
+        return self.dimensions_dict
+        
+    
+    def get_dimensions_t(self):
+        
+        self.dimensions_dict = {"B" : self.entry_t_B.text.get(1.0, "end-1c"), "h": self.entry_t_h.text.get(1.0, "end-1c"), "H" : self.entry_t_H.text.get(1.0, "end-1c"), "b" : self.entry_t_b.text.get(1.0, "end-1c")}
+        return self.dimensions_dict
+        
+
+    def get_dimensions_c(self):
+
+        self.dimensions_dict = {"B" : self.entry_c_B.text.get(1.0, "end-1c"), "h": self.entry_c_h.text.get(1.0, "end-1c"), "H" : self.entry_c_H.text.get(1.0, "end-1c"), "b" : self.entry_c_b.text.get(1.0, "end-1c")}
+        return self.dimensions_dict
+        
+    
+    def get_dimensions_o(self):
+        
+        self.dimensions_dict = {"r" : self.entry_o_r.text.get(1.0, "end-1c")}
+        return self.dimensions_dict
+          
+    
+    
     
     
     #Entry class
