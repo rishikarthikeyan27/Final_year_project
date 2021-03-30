@@ -148,7 +148,7 @@ class Window:
 
 
         #Submit Button
-        self.submit = tk.Button(self.win, text = "Submit", command = self.add_beam_length_label)
+        self.submit = tk.Button(self.win, text = "Submit", command = self.master_submit)
         self.submit.place(height = 30, width = 140, x=80, y=350)
 
         #Create the beam picture
@@ -208,6 +208,9 @@ class Window:
         
         #support choice list
         self.support_choice_list = []
+
+        #Arrow load list
+        self.arrow_load = []
 
         #mainloop
         self.win.mainloop()
@@ -487,7 +490,7 @@ class Window:
     def create_up_arrow(self):
         x = self.beam_length.get()
         if x:
-            self.arrow_up_lab = tk.Label(self.frame2,image = self.resized_arrow_up_pic, bg = '#006665')
+            self.arrow_up_lab = tk.Label(self.frame2,image = self.resized_arrow_up_pic, bg = '#006665', text = "up_arrow")
             self.arrow_up_lab.place(height = 30, width = 30, x=random.randrange(130,140), y=random.randrange(260,270))
             self.arrow_list.append(self.arrow_up_lab)
             self.entry = self.Entry(self.win)
@@ -503,7 +506,7 @@ class Window:
         x = self.beam_length.get()
         if x:
             print("Yeah")
-        self.arrow_down_lab = tk.Label(self.frame2,image = self.resized_arrow_down_pic, bg = '#006665')
+        self.arrow_down_lab = tk.Label(self.frame2,image = self.resized_arrow_down_pic, bg = '#006665', text = "down_arrow")
         self.arrow_down_lab.place(height = 30, width = 30, x=random.randrange(130,140), y=random.randrange(140,150), anchor = "c")
         self.arrow_list.append(self.arrow_down_lab)
         self.entry = self.Entry(self.win)
@@ -512,7 +515,7 @@ class Window:
         self.input_list.append(self.entry.text)
         return
     def create_moment_ac(self):
-        self.moment_ac_lab = tk.Label(self.frame2,image = self.resized_moment_ac_pic, bg = '#006665')
+        self.moment_ac_lab = tk.Label(self.frame2,image = self.resized_moment_ac_pic, bg = '#006665', text = "moment_ac_arrow")
         self.moment_ac_lab.place(height = 30, width = 30, x=random.randrange(130,140), y=random.randrange(140,150))
         self.arrow_list.append(self.moment_ac_lab)
         self.entry = self.Entry(self.win)
@@ -521,7 +524,7 @@ class Window:
         self.input_list.append(self.entry.text)
         return
     def create_moment_c(self):
-        self.moment_c_lab = tk.Label(self.frame2,image = self.resized_moment_c_pic, bg = '#006665')
+        self.moment_c_lab = tk.Label(self.frame2,image = self.resized_moment_c_pic, bg = '#006665', text = "moment_c_arrow")
         self.moment_c_lab.place(height = 30, width = 30, x=random.randrange(130,140), y=random.randrange(140,150))
         self.arrow_list.append(self.moment_c_lab)
         self.entry = self.Entry(self.win)
@@ -530,7 +533,7 @@ class Window:
         self.input_list.append(self.entry.text)
         return
     def create_uniform_load(self):
-        self.uniform_load_lab = tk.Label(self.frame2,image = self.resized_g_uniform_pic, bg = '#006665')
+        self.uniform_load_lab = tk.Label(self.frame2,image = self.resized_g_uniform_pic, bg = '#006665', text = "uniform_load_arrow")
         self.uniform_load_lab.place(height = 40, width = 80, x=random.randrange(130,140), y=random.randrange(140,150))
         self.arrow_list.append(self.uniform_load_lab)
         self.entry = self.Entry(self.win)
@@ -539,7 +542,7 @@ class Window:
         self.input_list.append(self.entry.text)
         return
     def create_nonuniform_load(self):
-        self.nonuniform_load_lab = tk.Label(self.frame2,image = self.resized_g_nonuniform_pic, bg = '#006665')
+        self.nonuniform_load_lab = tk.Label(self.frame2,image = self.resized_g_nonuniform_pic, bg = '#006665', text = "nonuniform_load_arrow")
         self.nonuniform_load_lab.place(height = 40, width = 80, x=random.randrange(130,140), y=random.randrange(140,150))
         self.arrow_list.append(self.nonuniform_load_lab)
         self.entry = self.Entry(self.win)
@@ -737,14 +740,22 @@ class Window:
         self.static_indeterminacy = cf.calc_static_indeterminacy(self.no_of_reactions)
         print("Total no.of reactions : " + str(self.no_of_reactions))
         print("Static indeterminacy : " + str(self.static_indeterminacy))
+    
+    def master_submit(self):
+        self.add_beam_length_label()
+
+        # #generating dictionary
+        # # The dictionary will include the arrow position relative to the beam as the key
+        # # and it will
+
+        # for i in self.input_list:
+        #     print(i.get(1.0, "end-1c"))
+        
+
+    def add_manual_arrow_location(self):
+                
 
     
-    def info(self):
-        #get number of nodes
-        #get number of elements
-        #get moment of inertia
-        #get youngs modulus
-        pass
     
     #Entry class
     class Entry:
