@@ -743,6 +743,8 @@ class Window:
             self.create_fixed_support_end()
         elif choice == "No Fixed Support":
             self.create_no_fixed_support()
+        
+        self.support_type_name = choice
     
     def read_support_text(self):
         for i in self.support_list:
@@ -897,7 +899,7 @@ class Window:
             supports_list.append(supports_info_dict)
         
         return
-        #cf.get_results(loads_list, supports_list, self.dimensions_dict)
+        #cf.get_results(loads_list, supports_list, self.dimensions_dict, self.static_indeterminacy, self.support_type_name)
                     
 
     #Entry class
