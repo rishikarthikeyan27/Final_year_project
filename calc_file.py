@@ -399,7 +399,35 @@ def calc_obeam_shear_stress(shear_force, r):
 
 # helps interpret the whole front end
 
-def get_results(loads_list, supports_list, dimensions_dict):
+def get_results(loads_list, supports_list, dimensions_dict, static_indeterminacy, support_type_name):
+    
+    if static_indeterminacy <= 0:
+        print("Statically Determinate")
+        if support_type_name == "Fixed Right": 
+            #How to deal with this when it is statically determinate
+            pass
+        elif support_type_name == "Fixed Left":
+            #How to deal with this when it is statically determinate
+            pass
+        elif support_type_name == "No Fixed Support":
+            #how to deal with this when it is statically determinate
+            pass
+    elif static_indeterminacy >0:
+        print("Statically Indeterminate")
+        if support_type_name == "Fixed Right": 
+            #How to deal with this when it is statically indeterminate
+            pass
+        elif support_type_name == "Fixed Left":
+            #How to deal with this when it is statically indeterminate
+            pass
+        elif support_type_name == "Fixed Ended":
+            #how to deal with this when it is statically indeterminate
+            pass
+        elif support_type_name == "No Fixed Support":
+            #how to deal with this when it is statically indeterminate
+            pass
+
+        
     pass
 
 
