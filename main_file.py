@@ -217,6 +217,9 @@ class Window:
         #final load list
         self.final_load_list = []
 
+        #grand load list
+        self.grand_load_list = []
+
         #mainloop
         self.win.mainloop()
 
@@ -555,6 +558,7 @@ class Window:
             self.input_list.append(self.entry.text)
             self.len_lab_list.append(self.arrow_len.arrow_rel_len_lab)
             print(self.len_lab_list)
+            self.grand_load_list.append([self.arrow_up_lab, self.entry.text,self.arrow_len.arrow_rel_len_lab])
         else:
             self.alert_lab.place(width = 200, height = 30, x = 30, y = 10)
             self.alert_lab.destroy()
@@ -571,7 +575,7 @@ class Window:
         self.arrow_down_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text, lab = self.arrow_len.arrow_rel_len_lab: self.widget_master_up(event, txt , lab))
         self.input_list.append(self.entry.text)
         self.len_lab_list.append(self.arrow_len.arrow_rel_len_lab)
-        print(self.len_lab_list)
+        self.grand_load_list.append([self.arrow_down_lab, self.entry.text,self.arrow_len.arrow_rel_len_lab])
         return
     def create_moment_ac(self):
         self.moment_ac_lab = tk.Label(self.frame2,image = self.resized_moment_ac_pic, bg = '#006665', text = "moment_ac_arrow")
@@ -581,6 +585,8 @@ class Window:
         self.arrow_len = self.len_lab(self.frame2)
         self.moment_ac_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text, lab = self.arrow_len.arrow_rel_len_lab: self.widget_master_up(event, txt, lab))
         self.input_list.append(self.entry.text)
+        self.len_lab_list.append(self.arrow_len.arrow_rel_len_lab)
+        self.grand_load_list.append([self.moment_ac_lab , self.entry.text,self.arrow_len.arrow_rel_len_lab])
         return
     def create_moment_c(self):
         self.moment_c_lab = tk.Label(self.frame2,image = self.resized_moment_c_pic, bg = '#006665', text = "moment_c_arrow")
@@ -590,6 +596,8 @@ class Window:
         self.arrow_len = self.len_lab(self.frame2)
         self.moment_c_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text, lab = self.arrow_len.arrow_rel_len_lab: self.widget_master_up(event, txt, lab))
         self.input_list.append(self.entry.text)
+        self.len_lab_list.append(self.arrow_len.arrow_rel_len_lab)
+        self.grand_load_list.append([self.moment_c_lab, self.entry.text,self.arrow_len.arrow_rel_len_lab])
         return
     def create_uniform_load(self):
         self.uniform_load_lab = tk.Label(self.frame2,image = self.resized_g_uniform_pic, bg = '#006665', text = "uniform_load_arrow")
@@ -599,6 +607,8 @@ class Window:
         self.arrow_len = self.len_lab(self.frame2)
         self.uniform_load_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text, lab = self.arrow_len.arrow_rel_len_lab: self.widget_master_up(event, txt, lab))
         self.input_list.append(self.entry.text)
+        self.len_lab_list.append(self.arrow_len.arrow_rel_len_lab)
+        self.grand_load_list.append([self.uniform_load_lab, self.entry.text,self.arrow_len.arrow_rel_len_lab])
         return
     def create_nonuniform_load(self):
         self.nonuniform_load_lab = tk.Label(self.frame2,image = self.resized_g_nonuniform_pic, bg = '#006665', text = "nonuniform_load_arrow")
@@ -608,6 +618,8 @@ class Window:
         self.arrow_len = self.len_lab(self.frame2)
         self.nonuniform_load_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text, lab = self.arrow_len.arrow_rel_len_lab: self.widget_master_up(event, txt, lab))
         self.input_list.append(self.entry.text)
+        self.len_lab_list.append(self.arrow_len.arrow_rel_len_lab)
+        self.grand_load_list.append([self.nonuniform_load_lab, self.entry.text,self.arrow_len.arrow_rel_len_lab])
         return
     def create_usd_uniform_load(self):
         self.usd_uniform_load_lab = tk.Label(self.frame2,image = self.resized_g_usd_uniform_pic, bg = '#006665')
@@ -617,6 +629,8 @@ class Window:
         self.arrow_len = self.len_lab(self.frame2)
         self.usd_uniform_load_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text, lab = self.arrow_len.arrow_rel_len_lab: self.widget_master_down(event, txt, lab))
         self.input_list.append(self.entry.text)
+        self.len_lab_list.append(self.arrow_len.arrow_rel_len_lab)
+        self.grand_load_list.append([self.usd_uniform_load_lab, self.entry.text,self.arrow_len.arrow_rel_len_lab])
         return
     def create_usd_nonuniform_load(self):
         self.usd_nonuniform_load_lab = tk.Label(self.frame2,image = self.resized_g_usd_nonuniform_pic, bg = '#006665')
@@ -626,6 +640,8 @@ class Window:
         self.arrow_len = self.len_lab(self.frame2)
         self.usd_nonuniform_load_lab.bind('<B1-Motion>', lambda event, txt = self.entry.text, lab = self.arrow_len.arrow_rel_len_lab: self.widget_master_down(event, txt, lab))
         self.input_list.append(self.entry.text)
+        self.len_lab_list.append(self.arrow_len.arrow_rel_len_lab)
+        self.grand_load_list.append([self.usd_nonuniform_load_lab, self.entry.text,self.arrow_len.arrow_rel_len_lab])
         return
     
     # Creating supports
@@ -836,10 +852,22 @@ class Window:
     
     def get_arrow_final_length(self, lis):
         print(lis)
+    
+    
           
     def master_submit(self, lis):
         self.add_beam_length_label()
         self.get_arrow_final_length(lis)
+        print("Arrow details : ")
+        for i in range(0, len(self.grand_load_list)):
+            for j in range(0, len(self.grand_load_list[i])):
+                if j == 0:
+                    print(self.grand_load_list[i][j].cget('text'))
+                elif j == 1:
+                    print(self.grand_load_list[i][j].get(1.0, "end-1c"))
+                elif j == 2:
+                    print(self.grand_load_list[i][j].cget('text'))
+            
 
         # #generating dictionary
         # # The dictionary will include the arrow position relative to the beam as the key
