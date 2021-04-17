@@ -754,14 +754,12 @@ class Window:
 
     def get_arrow_length(self, wid):
         entry = int(self.beam_length_number.get())
-        print(entry)
         init = 1
         # print("In meters : " + str(math.floor((int(entry)/400)*(int(i.winfo_x())-610))))
         return (int(entry)/400)*(int(wid.winfo_x())-40)
 
     def get_support_length(self):
         entry = int(self.beam_length_number.get())
-        print(entry)
         init = 1
         for i in self.support_list:
             # print("In meters : " + str(math.floor((int(entry)/400)*(int(i.winfo_x())-610))))
@@ -891,6 +889,7 @@ class Window:
         
         for k in range(0, len(self.grand_support_list)):
             supports_info_dict = {}
+            supports_info_dict["support"] = str(k+1)
             for l in range(0, len(self.grand_support_list[k])):
                 if l == 0:
                     supports_info_dict["support_type"] = self.grand_support_list[k][l].cget('text')

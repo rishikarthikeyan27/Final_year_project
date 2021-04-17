@@ -434,8 +434,13 @@ def get_results(loads_list, supports_list, dimensions_dict, static_indeterminacy
             all_loads.append(Ra)
             max_shear_force = max(all_loads) 
         elif support_type_name == "No Fixed Support":
-            #how to deal with this when it is statically determinate
+            # how to deal with this when it is statically determinate
+            # this means that there are three equilibrium equations and less than or equal to three supports
             pass
+        
+        return({"max shear force" : max_shear_force})
+        
+    # Statically indeterminate    
     elif static_indeterminacy >0:
         print("Statically Indeterminate")
         if support_type_name == "Fixed Right": 
