@@ -1,6 +1,6 @@
 from beam_details import Beam
 from sympy import symbols
-
+from sympy.core import S, Symbol, diff, symbols
 from tkinter import *
 from PIL import ImageTk, Image
 import numpy as np
@@ -41,12 +41,20 @@ def give_shear_force_list(shear_force):
 
 def render_sf_list(sf_list):
     for i in sf_list:
-        if i[0] != '-':
+        if i[0] =='+' or i[0]!='-':
             #Then it means it is +
-            pass
+            if ",0)" in i:
+                print("Point_Load ", i)
+            elif ",1)" in i:
+                print("Distributed_Load", i)
+
+            
         elif i[0] == "-":
             #Then it means it is -
-            pass
+            if ",0)" in i:
+                print("Point_Load ", i)
+            elif ",1)" in i:
+                print("Distributed_Load", i)
 
 
 
