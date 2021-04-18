@@ -102,10 +102,13 @@ def render_sf_list(sf_list):
             #Then it means this is the absolute first shear force
             if ",0)" in i:
                 # Point Load from down
-                j = i
-                templist = j.split("*")
-                point_load_magnitude = round(float(templist[0]), 2)
-                graph_canvas.create_line(1, float(125 - (5*point_load_magnitude)), 1, 125, fill = "red")
+                print("Point_Load ", i)
+                tl1 = i.split(',')
+                print("Location : ", tl1[1])
+                # j = i
+                # templist = j.split("*")
+                # point_load_magnitude = round(float(templist[0]), 2)
+                # graph_canvas.create_line(1, float(125 - (5*point_load_magnitude)), 1, 125, fill = "red")
 
             
               
