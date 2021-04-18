@@ -39,8 +39,8 @@ graph_canvas.create_line(1,1, 1, 250, fill = "black")
 def graph():
     R1, R2, R3, R4 = symbols('R1, R2, R3, R4')
     b = Beam(3, 200*(10**9), 400*(10**-6))
-    b.apply_load(10, 0, 0, end = 1)
-    b.apply_load(10, 2.75, -1)
+    b.apply_load(10, 0, 0, end = 3)
+    # b.apply_load(10, 2.75, -1)
 
     b.apply_load(R1, 0, -1)
     b.apply_load(R2, 1, -1)
@@ -60,11 +60,13 @@ def give_shear_force_list(shear_force):
     shear_force_list.remove(shear_force_list[-1])
     for i in range(0, len(shear_force_list)):
         shear_force_list[i] = shear_force_list[i]+")"
-    render_sf_list(shear_force_list)
+    sf_dict_list(shear_force_list)
 
-def render_sf_list(sf_list):
+def sf_dict_list(sf_list):
+    beam_shear_list = []
     
     for i in sf_list:
+        dict = {}
         if i[0] =='+':
             #Then it means it is +
             if ",0)" in i:
@@ -72,52 +74,95 @@ def render_sf_list(sf_list):
                 j = i
                 templist = j.split("*")
                 point_load_magnitude = round(float(templist[0]), 2)
-                print("Point_Load : ", i)
+                dict["shear_magnitude"] = point_load_magnitude
+
+                #Location
                 tl1 = i.split(',')
-                print("Location : ", tl1[1])
+                dict["location"] = tl1[1]
+
+                #Type
+                dict["type"] = "point"
 
             
               
             elif ",1)" in i:
                 # Distributed Load is beginning
-                print("Distributed_Load", i)
+                j = i
+                templist = j.split("*")
+                point_load_magnitude = round(float(templist[0]), 2)
+                dict["shear_magnitude"] = point_load_magnitude
+
+                #Location
                 tl1 = i.split(',')
-                print("Location : ", tl1[1])
+                dict["location"] = tl1[1]
+
+                #Type
+                dict["type"] = "distributed"
 
             
         elif i[0] == "-":
             #Then it means it is -
             if ",0)" in i:
                 #Point Load from up
-                print("Point_Load ", i)
+                j = i
+                templist = j.split("*")
+                point_load_magnitude = round(float(templist[0]), 2)
+                dict["shear_magnitude"] = point_load_magnitude
+
+                #Location
                 tl1 = i.split(',')
-                print("Location : ", tl1[1])
+                dict["location"] = tl1[1]
+
+                #Type
+                dict["type"] = "point"
             elif ",1)" in i:
                 #Distributed Load is ending
-                print("Distributed_Load", i)
+                j = i
+                templist = j.split("*")
+                point_load_magnitude = round(float(templist[0]), 2)
+                dict["shear_magnitude"] = point_load_magnitude
+
+                #Location
                 tl1 = i.split(',')
-                print("Location : ", tl1[1])
+                dict["location"] = tl1[1]
+
+                #Type
+                dict["type"] = "distributed"
         
         else : 
             #Then it means this is the absolute first shear force
             if ",0)" in i:
                 # Point Load from down
-                print("Point_Load ", i)
+                j = i
+                templist = j.split("*")
+                point_load_magnitude = round(float(templist[0]), 2)
+                dict["shear_magnitude"] = point_load_magnitude
+
+                #Location
                 tl1 = i.split(',')
-                print("Location : ", tl1[1])
-                # j = i
-                # templist = j.split("*")
-                # point_load_magnitude = round(float(templist[0]), 2)
-                # graph_canvas.create_line(1, float(125 - (5*point_load_magnitude)), 1, 125, fill = "red")
+                dict["location"] = tl1[1]
+
+                #Type
+                dict["type"] = "point"
 
             
               
             elif ",1)" in i:
                 # Distributed Load is beginning
-                print("Distributed_Load", i)
+                j = i
+                templist = j.split("*")
+                point_load_magnitude = round(float(templist[0]), 2)
+                dict["shear_magnitude"] = point_load_magnitude
+
+                #Location
                 tl1 = i.split(',')
-                print("Location : ", tl1[1])
-            
+                dict["location"] = tl1[1]
+
+                #Type
+                dict["type"] = "distributed"
+        beam_shear_list.append(dict)
+
+    print(beam_shear_list)        
 
 
 
