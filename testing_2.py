@@ -7,11 +7,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2Tk   
+import tkinter as tk
+import tkinter.ttk as ttk
+from PIL import ImageTk, Image
+import random
+import calc_file as cf
+import math
+import time
 
+#Create window
+win = tk.Tk()
+win.geometry('1000x650')
+win.configure(bg = 'black')
 
-root = Tk()
-root.title('graphda')
-root.geometry('400x200')
+frame1 = tk.Frame(master=win, width=280, height=630, bg='#006665')
+frame1.pack(fill=tk.BOTH, padx=10, pady=15,side=tk.LEFT, expand=False)
+frame2 = tk.Frame(master=win, width=680, height=315, bg="#006665")
+frame2.pack(fill=tk.Y, padx=5, pady=15,side=tk.TOP, expand=False)
+frame3 = tk.Frame(master=win, width=680, height=315, bg="#006665")
+frame3.pack(fill=tk.Y, padx=5, pady=15,side=tk.BOTTOM, expand=False)
+
+entry = 3
+
+#Graph init
+graph_canvas = tk.Canvas(frame3, bg = '#006665',highlightthickness=0, highlightbackground="#006665")
+graph_canvas.place(width = 440, height = 250, x = 40, y=10)
+graph_canvas.create_line(1,125, 400, 125, fill = "black")
+graph_canvas.create_line(1,1, 1, 250, fill = "black")
+
 
 def graph():
     R1, R2, R3, R4 = symbols('R1, R2, R3, R4')
@@ -40,21 +63,58 @@ def give_shear_force_list(shear_force):
     render_sf_list(shear_force_list)
 
 def render_sf_list(sf_list):
+    
     for i in sf_list:
-        if i[0] =='+' or i[0]!='-':
+        if i[0] =='+':
             #Then it means it is +
             if ",0)" in i:
-                print("Point_Load ", i)
+                # Point Load from down
+                j = i
+                templist = j.split("*")
+                point_load_magnitude = round(float(templist[0]), 2)
+                print("Point_Load : ", i)
+                tl1 = i.split(',')
+                print("Location : ", tl1[1])
+
+            
+              
             elif ",1)" in i:
+                # Distributed Load is beginning
                 print("Distributed_Load", i)
+                tl1 = i.split(',')
+                print("Location : ", tl1[1])
 
             
         elif i[0] == "-":
             #Then it means it is -
             if ",0)" in i:
+                #Point Load from up
                 print("Point_Load ", i)
+                tl1 = i.split(',')
+                print("Location : ", tl1[1])
             elif ",1)" in i:
+                #Distributed Load is ending
                 print("Distributed_Load", i)
+                tl1 = i.split(',')
+                print("Location : ", tl1[1])
+        
+        else : 
+            #Then it means this is the absolute first shear force
+            if ",0)" in i:
+                # Point Load from down
+                j = i
+                templist = j.split("*")
+                point_load_magnitude = round(float(templist[0]), 2)
+                graph_canvas.create_line(1, float(125 - (5*point_load_magnitude)), 1, 125, fill = "red")
+
+            
+              
+            elif ",1)" in i:
+                # Distributed Load is beginning
+                print("Distributed_Load", i)
+                tl1 = i.split(',')
+                print("Location : ", tl1[1])
+            
 
 
 
@@ -63,12 +123,12 @@ def render_sf_list(sf_list):
     # canvas.draw()
     # canvas.get_tk_widget().pack(side = BOTTOM, fill = BOTH, expand = True)
 
-mybutton = Button(root, text = "Graph It!", command = graph)
-mybutton.pack()
+mybutton = Button(frame1, text = "Graph It!", command = graph)
+mybutton.place(width = 70, height = 20, x = 40, y = 10)
 
 
 
-root.mainloop()
+win.mainloop()
 
 # win = tk.Tk()
 # win.geometry('1000x650')
