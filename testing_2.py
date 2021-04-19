@@ -181,7 +181,8 @@ def sf_dict_list(sf_list):
                 dict["type"] = "distributed"
         beam_shear_list.append(dict)
 
-    convert_to_coordinates(beam_shear_list)        
+    # convert_to_coordinates(beam_shear_list)
+    print(beam_shear_list)    
 
 def convert_to_coordinates(list):
     #Remember that the dict is already in the exact order you want it, just start converting each dict to a line
@@ -214,23 +215,48 @@ def convert_to_coordinates(list):
     '''
     i = 0
     j = 0
-    y = 0 
+    y = 0
+    distribution_switch = False
+    distribution_starting_point = 0
     for j in range(0, len(list)):
         for i in range(0, len(coordinate_x)):
             if float(list[j]["location"]) == coordinate_x[i]:
-                print("load location : " + str(coordinate_x[i]) + "=" + list[j]["location"])
-                print ("load type at that location : ", list[j]["type"])
-                print("load magnitude at the location : ", list[j]["shear_magnitude"])
                 coordinate_x.insert(i, coordinate_x[i])
-                # y = y + float(list[j]["shear_magnitude"])
-                # coordinate_y.append(y)
-                print("location: ", coordinate_x[i], "y", y, " ")
-                print('\n')
                 break
     
     for i in range(0, len(coordinate_x)):
-        pass
-        
+        for j in range(0, len(list)):
+            if float(list[j]["location"]) == coordinate_x[i]:
+                print("shear_force_magnitude : ", list[j]["shear_magnitude"])
+                if list[j]["type"] == "point": 
+                    print("Here shear magnitude", float(list[j]["shear_magnitude"]))
+                    y = y + float(list[j]["shear_magnitude"])
+                    print ("y: ", y)
+                elif list[j]["type"] == "distributed":
+                    if float(list[j]["shear_magnitude"]) < 0:
+                        distribution_switch = True
+                        distribution_starting_point = float(list[j]["location"])
+                    print("Here shear magnitude", float(list[j]["shear_magnitude"]))
+                    if i==0:
+                        y = y + (float(list[j]["shear_magnitude"]) * (coordinate_x[i]))
+                        print ("y : ", y)
+                    else:
+                        y = y + (float(list[j]["shear_magnitude"]) * (coordinate_x[i] - coordinate_x[i-1]))
+                        print ("y : ", y)
+            
+            else:
+                if distribution_switch:
+                    # Then we need to keep doing the multiplication of shear load dist with the coordinate_x[i] - distribution_starting_point
+                    pass
+
+                else:
+                    # Just maintain the y
+                    pass
+
+                
+
+        coordinate_y.append(y)
+
         
     print("length of coordinate_x : ",len(coordinate_x))
     print ("length of coordinate_y : ",len(coordinate_y))
@@ -238,16 +264,16 @@ def convert_to_coordinates(list):
     
     
     
-    # fig, ax = plt.subplots()
-    # ax.plot(coordinate_x, coordinate_y)
+    fig, ax = plt.subplots()
+    ax.plot(coordinate_x, coordinate_y)
 
-    # ax.grid()
+    ax.grid()
 
-    # fig.savefig("test.png")
-    # plt.show()
+    fig.savefig("test.png")
+    plt.show()
 
-    # print(coordinate_x)
-    # print(coordinate_y)
+    print(coordinate_x)
+    print(coordinate_y)
         
 
 
