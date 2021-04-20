@@ -1,8 +1,6 @@
 from beam_details import Beam
 from sympy import symbols
 from sympy.core import S, Symbol, diff, symbols
-from tkinter import *
-from PIL import ImageTk, Image
 import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
@@ -14,6 +12,13 @@ import random
 import calc_file as cf
 import math
 import time
+import matplotlib.pyplot as plt
+
+from matplotlib.backends.backend_tkagg import (
+    FigureCanvasTkAgg, NavigationToolbar2Tk)
+# Implement the default Matplotlib key bindings.
+from matplotlib.backend_bases import key_press_handler
+from matplotlib.figure import Figure
 
 #Create window
 win = tk.Tk()
@@ -40,11 +45,15 @@ y = 0
 
 beam_length = 3.0
 
+def is_negative(x):
+    if x<0:
+        return True
+
 def graph():
     R1,R2, R3, R4 = symbols('R1, R2, R3, R4') #  
     b = Beam(beam_length, 200*(10**9), 400*(10**-6))
     b.apply_load(10, 0, 0, end = 3)
-    # b.apply_load(10, 2.75, -1)
+    b.apply_load(-10, 2.75, -1)
 
     b.apply_load(R1, 0, -1)
     b.apply_load(R2, 1, -1)
@@ -53,9 +62,12 @@ def graph():
     # b.bc_deflection = [(0, 0), (8, 0)]
     b.bc_deflection = [(0, 0),(1,0), (2,0), (3,0)] #
     b.solve_for_reaction_loads(R1,R2, R3, R4) # 
-    shear_force = b.shear_force()
-    shear_force = str(shear_force)
-    give_shear_force_list(shear_force)
+    shear_force = b.realplot_shear_force()
+
+
+    # plt.plot(shear_force)
+    print("Lets what is there here : ", shear_force)
+    # give_shear_force_list(shear_force)
 
 def give_shear_force_list(shear_force):
 
@@ -181,8 +193,8 @@ def sf_dict_list(sf_list):
                 dict["type"] = "distributed"
         beam_shear_list.append(dict)
 
-    # convert_to_coordinates(beam_shear_list)
-    print(beam_shear_list)    
+    convert_to_coordinates(beam_shear_list)
+    
 
 def convert_to_coordinates(list):
     #Remember that the dict is already in the exact order you want it, just start converting each dict to a line
@@ -216,8 +228,10 @@ def convert_to_coordinates(list):
     i = 0
     j = 0
     y = 0
+    distributed_loads = [] #list of dictionaries
     distribution_switch = False
     distribution_starting_point = 0
+    distribution_name = 0
     for j in range(0, len(list)):
         for i in range(0, len(coordinate_x)):
             if float(list[j]["location"]) == coordinate_x[i]:
@@ -226,6 +240,7 @@ def convert_to_coordinates(list):
     
     for i in range(0, len(coordinate_x)):
         for j in range(0, len(list)):
+            dist_dict = {}
             if float(list[j]["location"]) == coordinate_x[i]:
                 print("shear_force_magnitude : ", list[j]["shear_magnitude"])
                 if list[j]["type"] == "point": 
@@ -233,17 +248,29 @@ def convert_to_coordinates(list):
                     y = y + float(list[j]["shear_magnitude"])
                     print ("y: ", y)
                 elif list[j]["type"] == "distributed":
-                    if float(list[j]["shear_magnitude"]) < 0:
+                    jlo = list[j]["shear_magnitude"]
+                    print('jlo : ')
+                    print(jlo)
+                    if is_negative(jlo):
+                        print("Load at this point: ", jlo)
+
                         distribution_switch = True
                         distribution_starting_point = float(list[j]["location"])
-                    print("Here shear magnitude", float(list[j]["shear_magnitude"]))
+                        
+                        dist_dict["name"] = distribution_name
+                        dist_dict["switch"] = distribution_switch
+                        dist_dict["starting_point"] = distribution_starting_point
+                        dist_dict["shear"] = float(list[j]["shear_magnitude"])
+                        distributed_loads.append(dist_dict)
+                        print("Dictionary : ", dist_dict)
+
+                    print("Here shear magnitude (distributed): ", float(list[j]["shear_magnitude"]))
                     if i==0:
-                        y = y + (float(list[j]["shear_magnitude"]) * (coordinate_x[i]))
+                        y = y + (jlo * (coordinate_x[i]))
                         print ("y : ", y)
                     else:
-                        y = y + (float(list[j]["shear_magnitude"]) * (coordinate_x[i] - coordinate_x[i-1]))
+                        y = y + (jlo * (coordinate_x[i] - coordinate_x[i-1]))
                         print ("y : ", y)
-            
             else:
                 if distribution_switch:
                     # Then we need to keep doing the multiplication of shear load dist with the coordinate_x[i] - distribution_starting_point
@@ -252,15 +279,12 @@ def convert_to_coordinates(list):
                 else:
                     # Just maintain the y
                     pass
-
-                
-
         coordinate_y.append(y)
+    
 
-        
+    print("distributed_loads : ", distributed_loads)
     print("length of coordinate_x : ",len(coordinate_x))
     print ("length of coordinate_y : ",len(coordinate_y))
-
     
     
     
@@ -272,8 +296,8 @@ def convert_to_coordinates(list):
     fig.savefig("test.png")
     plt.show()
 
-    print(coordinate_x)
-    print(coordinate_y)
+    # print(coordinate_x)
+    # print(coordinate_y)
         
 
 
@@ -288,7 +312,7 @@ def convert_to_coordinates(list):
     # canvas.get_tk_widget().pack(side = BOTTOM, fill = BOTH, expand = True)
 
 
-mybutton = Button(frame1, text = "Graph It!", command = graph)
+mybutton = tk.Button(frame1, text = "Graph It!", command = graph)
 mybutton.place(width = 70, height = 20, x = 40, y = 10)
 
 

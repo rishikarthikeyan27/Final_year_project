@@ -1,7 +1,3 @@
-"""
-This module can be used to solve 2D beam bending problems with
-singularity functions in mechanics.
-"""
 
 from sympy.core import S, Symbol, diff, symbols
 from sympy.solvers import linsolve
@@ -17,6 +13,7 @@ from sympy import lambdify, Add
 from sympy.core.compatibility import iterable
 from sympy.utilities.decorator import doctest_depends_on
 
+import matplotlib.pyplot as plt
 from matplotlib.figure import Figure
 
 numpy = import_module('numpy', import_kwargs={'fromlist':['arange']})
@@ -219,28 +216,6 @@ class Beam:
 
     @property
     def boundary_conditions(self):
-        """
-        Returns a dictionary of boundary conditions applied on the beam.
-        The dictionary has three keywords namely moment, slope and deflection.
-        The value of each keyword is a list of tuple, where each tuple
-        contains location and value of a boundary condition in the format
-        (location, value).
-        Examples
-        ========
-        There is a beam of length 4 meters. The bending moment at 0 should be 4
-        and at 4 it should be 0. The slope of the beam should be 1 at 0. The
-        deflection should be 2 at 0.
-        >>> from sympy.physics.continuum_mechanics.beam import Beam
-        >>> from sympy import symbols
-        >>> E, I = symbols('E, I')
-        >>> b = Beam(4, E, I)
-        >>> b.bc_deflection = [(0, 2)]
-        >>> b.bc_slope = [(0, 1)]
-        >>> b.boundary_conditions
-        {'deflection': [(0, 2)], 'slope': [(0, 1)]}
-        Here the deflection of the beam should be ``2`` at ``0``.
-        Similarly, the slope of the beam should be ``1`` at ``0``.
-        """
         return self._boundary_conditions
 
     @property
@@ -1210,7 +1185,7 @@ class Beam:
         else:
             length = self.length
         
-        return(plot(shear_force.subs(subs), (self.variable, 0, length),title='Shear Force',
+        return(plot(shear_force.subs(subs), (self.variable, 0, length),show = True ,title='Shear Force',
                 xlabel=r'$\mathrm{x}$', ylabel=r'$\mathrm{V}$', line_color='g'))
         
         

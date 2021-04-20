@@ -2,8 +2,10 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from sympy.physics.continuum_mechanics.beam import Beam
+
+from beam_details import Beam
 from sympy import symbols
+from sympy.core import S, Symbol, diff, symbols
 
 def calc_rbeam_centroid(B, H):
     centroid = H/2
@@ -399,67 +401,227 @@ def calc_obeam_shear_stress(shear_force, r):
     
     return
 
-# helps interpret the whole front end
 
-def get_results(loads_list, supports_list, dimensions_dict, static_indeterminacy, support_type_name):
 
-    if static_indeterminacy <= 0:
-        print("Statically Determinate")
-        if support_type_name == "Fixed Right": 
-            #How to deal with this when it is statically determinate
-            all_loads = []
-            up_arrow_sum = 0
-            down_arrow_sum = 0
-            for load_dict in loads_list:
-                if load_dict['load_type'] == "down_arrow":
-                    down_arrow_sum += load_dict['load_magnitude']
-                    all_loads.append(load_dict['load_magnitude'])
-                elif load_dict['load_type'] == "up_arrow":
-                    up_arrow_sum += load_dict['load_magnitude']
-                    all_loads.append(load_dict['load_magnitude'])
-            Ra = up_arrow_sum - down_arrow_sum
-            all_loads.append(Ra)
-            max_shear_force = max(all_loads)
-        elif support_type_name == "Fixed Left":
-            #How to deal with this when it is statically determinate
-            all_loads = []
-            up_arrow_sum = 0
-            down_arrow_sum = 0
-            for load_dict in loads_list:
-                if load_dict['load_type'] == "down_arrow":
-                    down_arrow_sum += load_dict['load_magnitude']
-                    all_loads.append(load_dict['load_magnitude'])
-                elif load_dict['load_type'] == "up_arrow":
-                    up_arrow_sum += load_dict['load_magnitude']
-                    all_loads.append(load_dict['load_magnitude'])
-            Ra = up_arrow_sum - down_arrow_sum
-            all_loads.append(Ra)
-            max_shear_force = max(all_loads) 
-        elif support_type_name == "No Fixed Support":
-            # how to deal with this when it is statically determinate
-            # this means that there are three equilibrium equations and less than or equal to three supports
-            pass
-        
-        return({"max shear force" : max_shear_force})
-        
-    # Statically indeterminate    
-    elif static_indeterminacy >0:
-        print("Statically Indeterminate")
-        if support_type_name == "Fixed Right": 
-            #How to deal with this when it is statically indeterminate
-            pass
-        elif support_type_name == "Fixed Left":
-            #How to deal with this when it is statically indeterminate
-            pass
-        elif support_type_name == "Fixed Ended":
-            #how to deal with this when it is statically indeterminate
-            pass
-        elif support_type_name == "No Fixed Support":
-            #how to deal with this when it is statically indeterminate
-            pass
+def get_results(loads_list, supports_list, dimensions_dict, support_type_name, beam_length, E):
+    
+    E = float(E)
+    beam_length = float(beam_length)
+    I = 0
 
+    if dimensions_dict["cross_type"] == "R":
+
+        B = dimensions_dict["B"]
+        H = dimensions_dict["H"]
+
+        I = calc_rbeam_i(B,H)
+
+    elif dimensions_dict["cross_type"] == "I":
+
+        B = dimensions_dict["B"]
+        H = dimensions_dict["H"]
+        h = dimensions_dict["h"]
+        b = dimensions_dict["b"]
+
+        I = calc_ibeam_i(B,h,H,b)
+
+    elif dimensions_dict["cross_type"] == "T":
+
+        B = dimensions_dict["B"]
+        H = dimensions_dict["H"]
+        h = dimensions_dict["h"]
+        b = dimensions_dict["b"]
+
+        I = calc_tbeam_i(B,h,H,b)
+
+    elif dimensions_dict["cross_type"] == "C":
+
+        B = dimensions_dict["B"]
+        H = dimensions_dict["H"]
+        h = dimensions_dict["h"]
+        b = dimensions_dict["b"]
+
+        I = calc_cbeam_i(B,h,H,b)
+    
+    elif dimensions_dict["cross_type"] == "O":
+
+        r = dimensions_dict["r"]
+
+        I = calc_obeam_i(r)
+
+
+    if support_type_name == "Fixed Left":
+
+        if len(supports_list) == 0:
+            
+            R, M = symbols('R, M')
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+
+            b.apply_load(R, 0, -1)
+            b.apply_load(M, 0, -2)
+
+            b.bc_deflection = [(0,0)]
+            b.bc_deflection = [(0,0)]
+
+            b.solve_for_reaction_loads(R, M) # 
+            shear_force_plot = b.realplot_shear_force()
+
+
+        elif len(supports_list) == 1:
+            
+            R1 = symbols('R, M ,R1')
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+
+            b.apply_load(R, 0, -1)
+            b.apply_load(M, 0, -2)
+            b.apply_load(R1, supports_list["support_length"], -1)
+
+            b.bc_deflection = [(0,0), (0, supports_list["support_length"])]
+            b.bc_slope = [(0,0)]
+
+            b.solve_for_reaction_loads(R, M, R1) # 
+            shear_force_plot = b.realplot_shear_force()
+
+
+        elif len(supports_list) == 2:
+            R, M, R1,R2 = symbols('R, M, R1,R2')
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+            b.apply_load(R, 0, -1)
+            b.apply_load(M, 0, -2)
+            b.apply_load(R1, supports_list[0]["support_length"], -1)
+            b.apply_load(R2, supports_list[1]["support_length"], -1)
+
+            b.bc_deflection = [(0, 0),(0, supports_list[0]["support_length"]), (0, supports_list[1]["support_length"])]
+            b.bc_slope = [(0,0)]
+            b.solve_for_reaction_loads(R, M, R1, R2) # 
+            shear_force_plot = b.realplot_shear_force()
         
-    pass
+        elif len(supports_list) == 3:
+            R, M, R1,R2,R3 = symbols('R, M, R1,R2, R3')
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+            b.apply_load(R, 0, -1)
+            b.apply_load(M, 0, -2)
+            b.apply_load(R1, supports_list[0]["support_length"], -1)
+            b.apply_load(R2, supports_list[1]["support_length"], -1)
+            b.apply_load(R3, supports_list[2]["support_length"], -1)
+
+            b.bc_deflection = [(0, 0),(0, supports_list[0]["support_length"]), (0, supports_list[1]["support_length"]), (0, supports_list[2]["support_length"])]
+            b.bc_slope=[(0,0)]
+            b.solve_for_reaction_loads(R, M, R1, R2, R3) # 
+            shear_force_plot = b.realplot_shear_force()
+
+        elif len(supports_list) == 4:
+            R, M, R1, R2, R3, R4 = symbols('R, M, R1, R2, R3, R4')
+            b = Beam()
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+            b.apply_load(R, 0, -1)
+            b.apply_load(M, 0, -2)
+            b.apply_load(R1, supports_list[0]["support_length"], -1)
+            b.apply_load(R2, supports_list[1]["support_length"], -1)
+            b.apply_load(R3, supports_list[2]["support_length"], -1)
+            b.apply_load(R4, supports_list[3]["supports_length"], -1)
+
+
+            b.bc_deflection = [(0, 0), (0, supports_list[0]["support_length"]), (0, supports_list[1]["support_length"]), (0, supports_list[2]["support_length"]), (0, supports_list[3]["support_length"])]
+            b.bc_slope = [(0,0)]
+            b.solve_for_reaction_loads(R, M, R1, R2, R3, R4) # 
+            shear_force_plot = b.realplot_shear_force()
+
+        elif len(supports_list) == 5:
+            R, M, R1, R2, R3, R4, R5 = symbols('R, M, R1, R2, R3, R4, R5')
+            b = Beam()
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+            b.apply_load(R, 0, -1)
+            b.apply_load(M, 0, -2)
+            b.apply_load(R1, supports_list[0]["support_length"], -1)
+            b.apply_load(R2, supports_list[1]["support_length"], -1)
+            b.apply_load(R3, supports_list[2]["support_length"], -1)
+            b.apply_load(R4, supports_list[3]["supports_length"], -1)
+            b.apply_load(R5, supports_list[4]["supports_length"], -1)
+
+            b.bc_deflection = [(0, 0),(0, supports_list[0]["support_length"]), (0, supports_list[1]["support_length"]), (0, supports_list[2]["support_length"]), (0, supports_list[3]["support_length"]), (0, supports_list[4]["support_length"])]
+            b.bc_slope = [(0,0)]
+            b.solve_for_reaction_loads(R, M, R1, R2, R3, R4, R5) # 
+            shear_force_plot = b.realplot_shear_force()
+
+    elif support_type_name == "Fixed Right":
+        pass
+    elif support_type_name == "Fixed Ended":
+        pass
+    elif support_type_name == "No Fixed Support":
+        pass
 
 
 

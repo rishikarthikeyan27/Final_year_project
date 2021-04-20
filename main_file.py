@@ -189,12 +189,7 @@ class Window:
 
         self.alert_lab = tk.Label(self.frame1, text= "Please enter beam length first")
 
-        #Graph init
-        self.graph_canvas = tk.Canvas(self.frame3, bg = '#006665',highlightthickness=0, highlightbackground="#006665")
-        self.graph_canvas.place(width = 440, height = 250, x = 40, y=10)
-        self.graph_canvas.create_line(0,125, 400, 125, fill = "black")
-        self.graph_canvas.create_line(0,0, 0, 250, fill = "black")
-
+        
         #List of all the arrows that have been added
         self.arrow_list = []
 
@@ -552,7 +547,7 @@ class Window:
     # Crossection OptionMenu master function
     def master_crossection_function(self, choice):
         self.display_crossection_picture(choice)
-        self.to_calc(choice)
+        # self.to_calc(choice)
 
     # Creating arrows
     def create_up_arrow(self):
@@ -838,36 +833,35 @@ class Window:
 
     def get_dimensions_r(self):
         
-        self.dimensions_dict = {"B" : self.entry_r_B.text.get(1.0, "end-1c"), "H" : self.entry_r_H.text.get(1.0, "end-1c")}
+        self.dimensions_dict = {"cross_type" : "R", "B" : float(self.entry_r_B.text.get(1.0, "end-1c")), "H" : float(self.entry_r_H.text.get(1.0, "end-1c"))}
         return self.dimensions_dict
     
     def get_dimensions_i(self):
         
-        self.dimensions_dict = {"B" : self.entry_i_B.text.get(1.0, "end-1c"), "h": self.entry_i_h.text.get(1.0, "end-1c"), "H" : self.entry_i_H.text.get(1.0, "end-1c"), "b" : self.entry_i_b.text.get(1.0, "end-1c")}
+        self.dimensions_dict = {"cross_type" : "I", "B" : float(self.entry_i_B.text.get(1.0, "end-1c")), "h": float(self.entry_i_h.text.get(1.0, "end-1c")), "H" : float(self.entry_i_H.text.get(1.0, "end-1c")), "b" : float(self.entry_i_b.text.get(1.0, "end-1c"))}
         return self.dimensions_dict
         
     
     def get_dimensions_t(self):
         
-        self.dimensions_dict = {"B" : self.entry_t_B.text.get(1.0, "end-1c"), "h": self.entry_t_h.text.get(1.0, "end-1c"), "H" : self.entry_t_H.text.get(1.0, "end-1c"), "b" : self.entry_t_b.text.get(1.0, "end-1c")}
+        self.dimensions_dict = {"cross_type" : "T", "B" : float(self.entry_t_B.text.get(1.0, "end-1c")), "h": float(self.entry_t_h.text.get(1.0, "end-1c")), "H" : float(self.entry_t_H.text.get(1.0, "end-1c")), "b" : float(self.entry_t_b.text.get(1.0, "end-1c"))}
         return self.dimensions_dict
         
 
     def get_dimensions_c(self):
 
-        self.dimensions_dict = {"B" : self.entry_c_B.text.get(1.0, "end-1c"), "h": self.entry_c_h.text.get(1.0, "end-1c"), "H" : self.entry_c_H.text.get(1.0, "end-1c"), "b" : self.entry_c_b.text.get(1.0, "end-1c")}
+        self.dimensions_dict = {"cross_type" : "C", "B" : float(self.entry_c_B.text.get(1.0, "end-1c")), "h": float(self.entry_c_h.text.get(1.0, "end-1c")), "H" : float(self.entry_c_H.text.get(1.0, "end-1c")), "b" : float(self.entry_c_b.text.get(1.0, "end-1c"))}
         return self.dimensions_dict
         
     
     def get_dimensions_o(self):
         
-        self.dimensions_dict = {"r" : self.entry_o_r.text.get(1.0, "end-1c")}
+        self.dimensions_dict = {"cross_type" : "O", "r" : float(self.entry_o_r.text.get(1.0, "end-1c"))}
         return self.dimensions_dict
 
     
     def get_arrow_final_length(self, lis):
         print(lis)
-    
     
           
     def master_submit(self, lis):
@@ -882,12 +876,23 @@ class Window:
             load_info_dict = {}
             load_info_dict["load"] = str(i+1)
             for j in range(0, len(self.grand_load_list[i])):
+                print(self.grand_load_list)
                 if j == 0:
                     load_info_dict["load_type"] = self.grand_load_list[i][j].cget('text')
+                    
                 elif j == 1:
-                    load_info_dict["load_magnitude"] = (self.grand_load_list[i][j].get(1.0, "end-1c"))+ " kN"
+                    if(load_info_dict["load_type"] == "uniform_load_arrow"):
+                        ok = self.grand_load_list[i][j].get(1.0, "end-1c")
+                        distributed_load = ok.split(" ")
+                        load_info_dict["load_magnitude"] = distributed_load[0]
+                        load_info_dict["distributed_end"] = distributed_load[-1]
+
+                    elif(load_info_dict["load_type"] == "down_arrow" or load_info_dict["load_type"] == "up_arrow"):
+                        ok = self.grand_load_list[i][j].get(1.0, "end-1c")
+                        load_info_dict["load_magnitude"] = ok
+
                 elif j == 2:
-                    load_info_dict["load_length"] = (self.grand_load_list[i][j].cget('text')) + " m" 
+                    load_info_dict["load_length"] = (self.grand_load_list[i][j].cget('text'))
             loads_list.append(load_info_dict)
         
         
@@ -898,12 +903,15 @@ class Window:
                 if l == 0:
                     supports_info_dict["support_type"] = self.grand_support_list[k][l].cget('text')
                 elif l == 1:
-                    supports_info_dict["support_length"]= (self.grand_support_list[k][l].cget('text')) + " m"
+                    supports_info_dict["support_length"]= (self.grand_support_list[k][l].cget('text'))
             supports_list.append(supports_info_dict)
         
         print('Loads  List : ', loads_list)
         print('Supports List : ', supports_list)
-        #cf.get_results(loads_list, supports_list, self.dimensions_dict, self.static_indeterminacy, self.support_type_name)
+        print('Dimensions Dict : ', self.dimensions_dict)
+        print('Youngs_Modulus : ',self.e.get())
+        print('Beam Length', self.beam_length_number.get())
+        cf.get_results(loads_list, supports_list, self.dimensions_dict, self.support_type_name, self.beam_length_number.get(), self.e.get())
                     
 
     #Entry class
