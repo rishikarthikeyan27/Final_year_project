@@ -642,11 +642,11 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
 
-            b.bc_deflection = [(beam_length-0.001, 0)]
-            b.bc_slope = [(beam_length-0.001, 0)]
+            b.bc_deflection = [(beam_length-0.0001, 0)]
+            b.bc_slope = [(beam_length-0.0001, 0)]
 
-            b.apply_load(R, (beam_length-0.001), -1)
-            b.apply_load(M, (beam_length-0.001), -2)
+            b.apply_load(R, (beam_length-0.0001), -1)
+            b.apply_load(M, (beam_length-0.0001), -2)
         
             b.solve_for_reaction_loads(R, M) #
             print(b.load) 
@@ -671,13 +671,13 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
 
-            b.apply_load(R, (beam_length - 0.001), -1)
-            b.apply_load(M, (beam_length - 0.001), -2)
+            b.apply_load(R, (beam_length - 0.0001), -1)
+            b.apply_load(M, (beam_length - 0.0001), -2)
 
             b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
 
-            b.bc_deflection = [(beam_length - 0.001, 0), (float(supports_list[0]["support_length"]), 0)]
-            b.bc_slope = [(beam_length - 0.001 , 0)] 
+            b.bc_deflection = [(beam_length - 0.0001, 0), (float(supports_list[0]["support_length"]), 0)]
+            b.bc_slope = [(beam_length - 0.0001 , 0)] 
 
             b.solve_for_reaction_loads(R, M, R1) # 
             shear_force_plot = b.realplot_shear_force()
@@ -698,14 +698,14 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     order = -1
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
-            b.apply_load(R, (beam_length - 0.001), -1)
-            b.apply_load(M, (beam_length - 0.001), -2)
+            b.apply_load(R, (beam_length - 0.0001), -1)
+            b.apply_load(M, (beam_length - 0.0001), -2)
 
             b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
             b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
 
-            b.bc_deflection = [(beam_length - 0.001, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0)]
-            b.bc_slope = [(beam_length - 0.001 , 0)] 
+            b.bc_deflection = [(beam_length - 0.0001, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0)]
+            b.bc_slope = [(beam_length - 0.0001 , 0)] 
 
             b.solve_for_reaction_loads(R, M, R1, R2) 
             shear_force_plot = b.realplot_shear_force()
@@ -725,15 +725,15 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     order = -1
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
-            b.apply_load(R, (beam_length - 0.001), -1)
-            b.apply_load(M, (beam_length - 0.001), -2)
+            b.apply_load(R, (beam_length - 0.0001), -1)
+            b.apply_load(M, (beam_length - 0.0001), -2)
 
             b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
             b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
             b.apply_load(R3, float(supports_list[2]["support_length"]), -1)
 
-            b.bc_deflection = [(beam_length - 0.001, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0)]
-            b.bc_slope = [(beam_length - 0.001 , 0)] 
+            b.bc_deflection = [(beam_length - 0.0001, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0)]
+            b.bc_slope = [(beam_length - 0.0001 , 0)] 
 
             b.solve_for_reaction_loads(R, M, R1, R2, R3) 
             shear_force_plot = b.realplot_shear_force()
@@ -761,8 +761,8 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
             b.apply_load(R4, supports_list[3]["support_length"], -1)
 
 
-            b.bc_deflection = [((beam_length - 0.001), 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), (float(supports_list[3]["support_length"]), 0)]
-            b.bc_slope = [((beam_length - 0.001), 0)]
+            b.bc_deflection = [((beam_length - 0.0001), 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), (float(supports_list[3]["support_length"]), 0)]
+            b.bc_slope = [((beam_length - 0.0001), 0)]
             b.solve_for_reaction_loads(R, M, R1, R2, R3, R4) # 
             shear_force_plot = b.realplot_shear_force()
 
@@ -790,8 +790,8 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
             b.apply_load(R5, supports_list[4]["support_length"], -1)
 
 
-            b.bc_deflection = [((beam_length - 0.001), 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), (float(supports_list[3]["support_length"]), 0) , (float(supports_list[4]["support_length"]), 0)]
-            b.bc_slope = [((beam_length - 0.001), 0)]
+            b.bc_deflection = [((beam_length - 0.0001), 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), (float(supports_list[3]["support_length"]), 0) , (float(supports_list[4]["support_length"]), 0)]
+            b.bc_slope = [((beam_length - 0.0001), 0)]
 
             b.solve_for_reaction_loads(R, M, R1, R2, R3, R4, R5) # 
             shear_force_plot = b.realplot_shear_force()
@@ -817,13 +817,13 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
 
-            b.bc_deflection = [(beam_length-0.001, 0), (0, 0)]
-            b.bc_slope = [(beam_length-0.001, 0), (0, 0)]
+            b.bc_deflection = [(beam_length-0.0001, 0), (0, 0)]
+            b.bc_slope = [(beam_length-0.0001, 0), (0, 0)]
 
             b.apply_load(R_left, 0, -1)
             b.apply_load(M_left, 0, -2)
-            b.apply_load(R_right, (beam_length-0.001), -1)
-            b.apply_load(M_right, (beam_length-0.001), -2)
+            b.apply_load(R_right, (beam_length-0.0001), -1)
+            b.apply_load(M_right, (beam_length-0.0001), -2)
            
         
             b.solve_for_reaction_loads(R_left, M_left, R_right, M_right) #
@@ -849,15 +849,15 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
 
-            b.bc_deflection = [(beam_length-0.001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0)]
-            b.bc_slope = [(beam_length-0.001, 0), (0, 0)]
+            b.bc_deflection = [(beam_length-0.0001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0)]
+            b.bc_slope = [(beam_length-0.0001, 0), (0, 0)]
 
             b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
 
             b.apply_load(R_left, 0, -1)
             b.apply_load(M_left, 0, -2)
-            b.apply_load(R_right, (beam_length - 0.001), -1)
-            b.apply_load(M_right, (beam_length - 0.001), -2)
+            b.apply_load(R_right, (beam_length - 0.0001), -1)
+            b.apply_load(M_right, (beam_length - 0.0001), -2)
            
         
             b.solve_for_reaction_loads(R_left, M_left, R_right, M_right, R1) #
@@ -880,16 +880,16 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     order = -1
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
-            b.bc_deflection = [(beam_length-0.001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0)]
-            b.bc_slope = [(beam_length-0.001, 0), (0, 0)]
+            b.bc_deflection = [(beam_length-0.0001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0)]
+            b.bc_slope = [(beam_length-0.0001, 0), (0, 0)]
 
             b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
             b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
 
             b.apply_load(R_left, 0, -1)
             b.apply_load(M_left, 0, -2)
-            b.apply_load(R_right, (beam_length - 0.001), -1)
-            b.apply_load(M_right, (beam_length - 0.001), -2)
+            b.apply_load(R_right, (beam_length - 0.0001), -1)
+            b.apply_load(M_right, (beam_length - 0.0001), -2)
            
         
             b.solve_for_reaction_loads(R_left, M_left, R_right, M_right, R1, R2) #
@@ -912,8 +912,8 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     order = -1
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
-            b.bc_deflection = [(beam_length-0.001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0)]
-            b.bc_slope = [(beam_length-0.001, 0), (0, 0)]
+            b.bc_deflection = [(beam_length-0.0001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0)]
+            b.bc_slope = [(beam_length-0.0001, 0), (0, 0)]
 
             b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
             b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
@@ -921,8 +921,8 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
 
             b.apply_load(R_left, 0, -1)
             b.apply_load(M_left, 0, -2)
-            b.apply_load(R_right, (beam_length - 0.001), -1)
-            b.apply_load(M_right, (beam_length - 0.001), -2)
+            b.apply_load(R_right, (beam_length - 0.0001), -1)
+            b.apply_load(M_right, (beam_length - 0.0001), -2)
            
         
             b.solve_for_reaction_loads(R_left, M_left, R_right, M_right, R1, R2, R3) #
@@ -945,8 +945,8 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     order = -1
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
-            b.bc_deflection = [(beam_length-0.001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), ((float(supports_list[3]["support_length"]), 0))]
-            b.bc_slope = [(beam_length-0.001, 0), (0, 0)]
+            b.bc_deflection = [(beam_length-0.0001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), ((float(supports_list[3]["support_length"]), 0))]
+            b.bc_slope = [(beam_length-0.0001, 0), (0, 0)]
 
             b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
             b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
@@ -956,8 +956,8 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
 
             b.apply_load(R_left, 0, -1)
             b.apply_load(M_left, 0, -2)
-            b.apply_load(R_right, (beam_length - 0.001), -1)
-            b.apply_load(M_right, (beam_length - 0.001), -2)
+            b.apply_load(R_right, (beam_length - 0.0001), -1)
+            b.apply_load(M_right, (beam_length - 0.0001), -2)
            
         
             b.solve_for_reaction_loads(R_left, M_left, R_right, M_right, R1, R2, R3, R4) #
@@ -980,8 +980,8 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
                     order = -1
                     b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
             
-            b.bc_deflection = [(beam_length-0.001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), ((float(supports_list[3]["support_length"]), 0)), ((float(supports_list[4]["support_length"]), 0))]
-            b.bc_slope = [(beam_length-0.001, 0), (0, 0)]
+            b.bc_deflection = [(beam_length-0.0001, 0), (0, 0), (float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), ((float(supports_list[3]["support_length"]), 0)), ((float(supports_list[4]["support_length"]), 0))]
+            b.bc_slope = [(beam_length-0.0001, 0), (0, 0)]
 
             b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
             b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
@@ -992,16 +992,123 @@ def get_results(loads_list, supports_list, dimensions_dict, support_type_name, b
 
             b.apply_load(R_left, 0, -1)
             b.apply_load(M_left, 0, -2)
-            b.apply_load(R_right, (beam_length - 0.001), -1)
-            b.apply_load(M_right, (beam_length - 0.001), -2)
+            b.apply_load(R_right, (beam_length - 0.0001), -1)
+            b.apply_load(M_right, (beam_length - 0.0001), -2)
         
             b.solve_for_reaction_loads(R_left, M_left, R_right, M_right, R1, R2, R3, R4, R5) #
 
             print(b.load) 
             shear_force_plot = b.realplot_shear_force()
             print(shear_force_plot)
+
     elif support_type_name == "No Fixed Support":
-        pass
+                
+        if len(supports_list) == 2:
+
+            R1, R2 = symbols('R1, R2')
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+            b.bc_deflection = [(float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0)]
+            
+            b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
+            b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
+
+            b.solve_for_reaction_loads(R1, R2) #
+            print(b.load) 
+            shear_force_plot = b.realplot_shear_force()
+            print(shear_force_plot)
+        
+        elif len(supports_list) == 3:
+            R1, R2, R3 = symbols('R1, R2, R3')
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+            b.bc_deflection = [(float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0)]
+            
+            b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
+            b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
+            b.apply_load(R3, float(supports_list[2]["support_length"]), -1)
+
+            b.solve_for_reaction_loads(R1, R2, R3)
+            shear_force_plot = b.realplot_shear_force()
+            print(shear_force_plot)
+        
+        elif len(supports_list) == 4:
+            R1, R2, R3, R4 = symbols('R1, R2, R3, R4')
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+            b.bc_deflection = [(float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), (float(supports_list[3]["support_length"]), 0)]
+    
+            b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
+            b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
+            b.apply_load(R3, float(supports_list[2]["support_length"]), -1)
+            b.apply_load(R4, float(supports_list[3]["support_length"]), -1)
+
+            b.solve_for_reaction_loads(R1, R2, R3, R4) #
+            print(b.load) 
+            shear_force_plot = b.realplot_shear_force()
+            print(shear_force_plot)
+
+        elif len(supports_list) == 5:
+            R1, R2, R3, R4, R5 = symbols('R1, R2, R3, R4, R5')
+            b = Beam(beam_length, E, I)
+            for i in range (0, len(loads_list)):
+                if loads_list[i]["load_type"] == "down_arrow":
+                    order = -1
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+                elif loads_list[i]["load_type"] == "uniform_load_arrow":
+                    order = 0
+                    b.apply_load(float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order, end = float(loads_list[i]["distributed_end"]))
+                
+                elif loads_list[i]["load_type"] == "up_arrow":
+                    order = -1
+                    b.apply_load(-float(loads_list[i]["load_magnitude"]), float(loads_list[i]["load_length"]), order)
+            
+            b.bc_deflection = [(float(supports_list[0]["support_length"]), 0), (float(supports_list[1]["support_length"]), 0), (float(supports_list[2]["support_length"]), 0), (float(supports_list[3]["support_length"]), 0), (float(supports_list[4]["support_length"]), 0)]
+            
+            b.apply_load(R1, float(supports_list[0]["support_length"]), -1)
+            b.apply_load(R2, float(supports_list[1]["support_length"]), -1)
+            b.apply_load(R3, float(supports_list[2]["support_length"]), -1)
+            b.apply_load(R4, float(supports_list[3]["support_length"]), -1)
+            b.apply_load(R5, float(supports_list[4]["support_length"]), -1)
+
+            b.solve_for_reaction_loads(R1, R2, R3, R4, R5) #
+
+            print(b.load) 
+            shear_force_plot = b.realplot_shear_force()
+            print(shear_force_plot)
 
 
 
