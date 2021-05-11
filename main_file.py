@@ -5,6 +5,7 @@ import random
 import calc_file as cf
 import math
 import time
+import tkinter.font as tkFont
 class Window:
 
     #Init
@@ -124,9 +125,11 @@ class Window:
         self.len_lab_list = []
 
         #Submit Button
-        self.submit = tk.Button(self.win, text = "Submit", command = lambda listt = self.len_lab_list: self.master_submit(listt))
-        self.submit.place(height = 30, width = 140, x=80, y=400)
+        self.submit = tk.Button(self.win, text = "Get Shear Force Diagram", command = lambda listt = self.len_lab_list: self.master_submit(listt))
+        self.submit.place(height = 30, width = 140, x=78, y=400)
 
+        self.get_max_force = tk.Button(self.win, text = "Get Maximum Shear Force", command = lambda listt = self.len_lab_list: self.master_submit_max_shear_force(listt))
+        self.get_max_force.place(height = 30, width = 150, x = 76, y = 440)
         #Create the beam picture
         self.beam_pic = Image.open('images/beam.png').resize((400, 50), Image.ANTIALIAS)
         self.resized_beam_pic = ImageTk.PhotoImage(self.beam_pic)
@@ -163,9 +166,13 @@ class Window:
         self.das_button = tk.Button(self.frame2, image = self.delete_all_supports, bg = '#006665',command = self.del_all_supports)
         self.das_button.place(width = 60, height = 60, x = 70, y=15)
 
+        fontStyle = tkFont.Font(family="Lucida Grande", size=20)
+
+        self.max_sf_canvas = tk.Label(self.frame3, text = 'Max Shear Stress = ? ', font = fontStyle, justify = 'center', bg = '#006665', fg = 'white')
+        self.max_sf_canvas.place(width = 500, height = 100, x = 125, y=125)
+
         self.alert_lab = tk.Label(self.frame1, text= "Please enter beam length first")
 
-        
         #List of all the arrows that have been added
         self.arrow_list = []
 
@@ -760,7 +767,7 @@ class Window:
         self.lenn = round(self.get_arrow_length(e.widget), 1)
         if self.lenn > (int(self.beam_length_number.get())+0.3):
             self.lenn = self.lenn+0.3
-        lab.config(text = str(self.lenn+0.5))
+        lab.config(text = str(self.lenn + 0.2))
         ex = e.widget.master.winfo_pointerx() - e.widget.master.winfo_rootx()
         ey = e.widget.master.winfo_pointery() - e.widget.master.winfo_rooty()
         if self.lenn <= int(self.beam_length_number.get()):
@@ -772,7 +779,7 @@ class Window:
         self.lenn = round(self.get_arrow_length(e.widget), 1)
         if self.lenn > (int(self.beam_length_number.get())+0.3):
             self.lenn = self.lenn+0.3
-        lab.config(text = str(self.lenn+0.5))
+        lab.config(text = str(self.lenn + 0.2))
         ex = e.widget.master.winfo_pointerx() - e.widget.master.winfo_rootx()
         ey = e.widget.master.winfo_pointery() - e.widget.master.winfo_rooty()
         if self.lenn <= int(self.beam_length_number.get()):
@@ -879,10 +886,62 @@ class Window:
         print('Dimensions Dict : ', self.dimensions_dict)
         print('Youngs_Modulus : ',self.e.get())
         print('Beam Length', self.beam_length_number.get())
-        get_image = cf.get_results(loads_list, supports_list, self.dimensions_dict, self.support_type_name, self.beam_length_number.get(), self.e.get())
-                    
+        max_shear_force = cf.get_plot(loads_list, supports_list, self.dimensions_dict, self.support_type_name, self.beam_length_number.get(), self.e.get())  
+        
+    
+    def master_submit_max_shear_force(self, lis):
+        self.add_beam_length_label()
+        self.get_arrow_final_length(lis)
+        print("Arrow details : ")
+
+        loads_list = []
+        supports_list = []
+
+        for i in range(0, len(self.grand_load_list)):
+            load_info_dict = {}
+            load_info_dict["load"] = str(i+1)
+            for j in range(0, len(self.grand_load_list[i])):
+                print(self.grand_load_list)
+                if j == 0:
+                    load_info_dict["load_type"] = self.grand_load_list[i][j].cget('text')
+
+                elif j == 1:
+                    if(load_info_dict["load_type"] == "uniform_load_arrow"):
+                        ok = self.grand_load_list[i][j].get(1.0, "end-1c")
+                        distributed_load = ok.split(" ")
+                        load_info_dict["load_magnitude"] = distributed_load[0]
+                        load_info_dict["distributed_end"] = distributed_load[-1]
+
+                    elif(load_info_dict["load_type"] == "down_arrow" or load_info_dict["load_type"] == "up_arrow"):
+                        ok = self.grand_load_list[i][j].get(1.0, "end-1c")
+                        load_info_dict["load_magnitude"] = ok
+
+                elif j == 2:
+                    load_info_dict["load_length"] = (self.grand_load_list[i][j].cget('text'))
+            loads_list.append(load_info_dict)
+        
+        
+        for k in range(0, len(self.grand_support_list)):
+            supports_info_dict = {}
+            supports_info_dict["support"] = str(k+1)
+            for l in range(0, len(self.grand_support_list[k])):
+                if l == 0:
+                    supports_info_dict["support_type"] = self.grand_support_list[k][l].cget('text')
+                elif l == 1:
+                    supports_info_dict["support_length"]= self.grand_support_list[k][l].cget('text')
+            supports_list.append(supports_info_dict)
+        
+        print('Loads  List : ', loads_list)
+        print('Supports List : ', supports_list)
+        print('Dimensions Dict : ', self.dimensions_dict)
+        print('Youngs_Modulus : ',self.e.get())
+        print('Beam Length', self.beam_length_number.get())
+        max_shear_force = cf.get_max_shear_force(loads_list, supports_list, self.dimensions_dict, self.support_type_name, self.beam_length_number.get(), self.e.get())  
+        sf_val = round(float(max_shear_force),1)
+        self.max_sf_canvas.configure(text = ('Shear Stress (Tmax) =  '+ str(sf_val)))
 
     #Entry class
+
     class Entry:
         def __init__(self, win):
             self.text = tk.Text(win, height = 1, width = 4)
